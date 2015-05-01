@@ -54,7 +54,10 @@ class GetMusics:
     def get_data(self):
         songs = dict()
         songs_names = []
-        artists = []
+        artists = dict()
+        artists_names = []
+        albums = dict()
+        albums_names = []
         #test = pylast.extract_items(self.data)
         i = 0
         for s in self.data:
