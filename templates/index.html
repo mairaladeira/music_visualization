@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>DMKM Visualization project</title>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <header>EM-DMKM Visualization Project</header>
+    <div id="visualization">
+        {{songs}}
+    </div>
+    <footer>
+        <ul id="data-source">
+            <li id="gabrielahrlr">Gabriela</li>
+            <li id="ladeira_maira">Maira</li>
+            <li id="mehreenikram">Mehreen</li>
+        </ul>
+    </footer>
+</body>
+</html>

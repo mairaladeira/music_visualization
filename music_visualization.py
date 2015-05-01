@@ -91,6 +91,7 @@ class GetMusics:
 
         print("--- %s seconds ---" % (time.time() - self.start_time))
 
+
     def get_tags(self, obj):
         tags = obj.get_top_tags(limit=2)
         return tags
