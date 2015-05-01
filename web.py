@@ -1,5 +1,5 @@
 __author__ = 'Maira'
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, Markup
 import webbrowser
 import threading
 import time
@@ -34,6 +34,7 @@ def hello():
         update_data(username)
     except Exception as e:
         print(e)
+    print(songs_by_time)
     return render_template('index.html', songs=songs_by_time)
 
 

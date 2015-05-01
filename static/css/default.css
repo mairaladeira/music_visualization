@@ -1,0 +1,52 @@
+body {
+    margin-right: 20px;
+}
+.day {
+    float: left;
+}
+.hour{
+    width: 30px;
+    height: 25px;
+    border: 1px solid;
+}
+
+footer {
+    clear: both;
+    padding-top: 30px;
+}
+.square span {
+    display: none;
+}
+.square {
+    height: 5px;
+}
+.square.classic {
+    background-color: orange;
+}
+
+.square.pop {
+    background-color: pink;
+}
+
+.square.latin {
+    background-color: yellow;
+}
+.square.rock {
+    background-color: purple;
+}
+
+.square.hip-hop {
+    background-color: turquoise;
+}
+
+.square.electronic {
+    background-color: blue;
+}
+
+.square.indie {
+    background-color: green;
+}
+
+.square.other {
+    background-color: gray;
+}

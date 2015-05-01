@@ -25,7 +25,7 @@ class GetMusic:
         self.time_songs = []
         self.start_time = time.time()
         self.csv = []
-        self.genders_list = set()
+        #self.genders_list = set()
         self.csvfile = open('data.csv', 'w')
         fieldnames = ['Name', 'Gender', 'Timestamp', 'Artist']
         self.csv_writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames,delimiter=',')
@@ -57,6 +57,8 @@ class GetMusic:
             for i in range(int(info['totalPages']), 1, -1):
                 print('getting musics from: '+str(i))
                 self.get_music(i)
+
+            print('getting musics from: 1')
         for s in data:
             self.format_song(s)
         #for key in self.genders.keys():
@@ -73,7 +75,7 @@ class GetMusic:
         #print(song)
         if self.encode_dict_key(song['name']) not in self.songs:
             url = self.lastfm_url+"&method=track.gettoptags&artist="+urllib.parse.quote_plus(song['artist']['#text'])+\
-                  "&track="+urllib.parse.quote_plus(song['name'])+"&limit=2"
+                  "&track="+urllib.parse.quote_plus(song['name'])+"&limit=2&autocorrect=1"
             r = requests.get(url)
             json_obj = r.json()
             #print(json_obj)
@@ -83,17 +85,18 @@ class GetMusic:
                 for tag in json_obj['toptags']['tag']:
                     if 'name' in tag:
                         try:
+                            #self.genders_list.add(tag['name'])
                             if i == 0:
-                                self.genders_list.add(tag['name'])
                                 t = tag['name']
                                 gender = self.parser_gender(t)
                                 if gender != '':
                                     gender_obj = gender
                                     i += 1
                         except Exception as e:
-                            print(e)
+                            #print(e)
+                            continue
             song_obj = {
-                'name': song['name'],
+                'name': song['name'].replace("'", "\'"),
                 'artist': song['artist']['#text'],
                 'album': song['album']['#text'],
                 'played': [song['date']['uts']],
@@ -103,25 +106,25 @@ class GetMusic:
             if gender_obj not in self.genders:
                 self.genders[gender_obj] = {
                     'gender': gender_obj,
-                    'musics': [song['name']]
+                    'musics': [song['name'].replace("'", "\'")]
                 }
             else:
-                if song['name'] not in self.genders[gender_obj]['musics']:
-                    self.genders[gender_obj]['musics'].append(song['name'])
+                if song['name'].replace("'", "\'") not in self.genders[gender_obj]['musics']:
+                    self.genders[gender_obj]['musics'].append(song['name'].replace("'", "\'"))
             self.songs[self.encode_dict_key(song['name'])] = song_obj
         elif 'date' in song:
             self.songs[self.encode_dict_key(song['name'])]['played'].append(song['date']['uts'])
 
-        self.csv_writer.writerow({'Name': song['name'],
+        self.csv_writer.writerow({'Name': song['name'].replace("'", "\'"),
                                   'Gender': self.songs[self.encode_dict_key(song['name'])]['gender'],
                                   'Timestamp': song['date']['uts'],
                                   'Artist': song['artist']['#text']})
-        t_song = [song['name'],
+        t_song = [song['name'].replace("'", "\'"),
                   self.songs[self.encode_dict_key(song['name'])]['gender'],
                   song['artist']['#text'],
                   song['album']['#text'],
-                  song['date']['uts']
-                ]
+                  song['date']['uts'],
+                  song['image'][2]['#text']]
         self.time_songs.append(t_song)
         if self.encode_dict_key(song['artist']['#text']) not in self.artists:
             artist_obj = {
@@ -133,8 +136,8 @@ class GetMusic:
             self.artists[self.encode_dict_key(song['artist']['#text'])] = artist_obj
         if song['album']['#text'] not in self.artists[self.encode_dict_key(song['artist']['#text'])]['albums']:
             self.artists[self.encode_dict_key(song['artist']['#text'])]['albums'].append(song['album']['#text'])
-        if song['name'] not in self.artists[self.encode_dict_key(song['artist']['#text'])]['musics']:
-            self.artists[self.encode_dict_key(song['artist']['#text'])]['musics'].append(song['name'])
+        if song['name'].replace("'", "\'") not in self.artists[self.encode_dict_key(song['artist']['#text'])]['musics']:
+            self.artists[self.encode_dict_key(song['artist']['#text'])]['musics'].append(song['name'].replace("'", "\'"))
         elif 'date' in song:
             self.artists[self.encode_dict_key(song['artist']['#text'])]['played'].append(song['date']['uts'])
 
@@ -146,12 +149,10 @@ class GetMusic:
                 'played': []
             }
             self.albums[self.encode_dict_key(song['album']['#text'])] = album_obj
-        if song['name'] not in self.albums[self.encode_dict_key(song['album']['#text'])]['musics']:
-            self.albums[self.encode_dict_key(song['album']['#text'])]['musics'].append(song['name'])
+        if song['name'].replace("'", "\'") not in self.albums[self.encode_dict_key(song['album']['#text'])]['musics']:
+            self.albums[self.encode_dict_key(song['album']['#text'])]['musics'].append(song['name'].replace("'", "\'"))
         elif 'date' in song:
             self.albums[self.encode_dict_key(song['album']['#text'])]['played'].append(song['date']['uts'])
-
-
 
     @staticmethod
     def parser_gender(tag):
@@ -187,7 +188,13 @@ class GetMusic:
             return 'indie'
         return ''
 
+    @staticmethod
+    def parser_countries(tag):
+        return ''
+
     def cache_data(self):
+        #print(self.genders_list)
+
         self.csvfile.close()
         self.time_songs = sorted(self.time_songs, key=itemgetter(4))
 

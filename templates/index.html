@@ -3,14 +3,16 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>DMKM Visualization project</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/default.css') }}">
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main_visualization.js') }}"></script>
+
 </head>
 <body>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <header>EM-DMKM Visualization Project</header>
     <div id="visualization">
-        {{songs}}
+
     </div>
     <footer>
         <ul id="data-source">
@@ -19,5 +21,35 @@
             <li id="mehreenikram">Mehreen</li>
         </ul>
     </footer>
+    <script>
+        $(function(){
+            songs = [];
+            var s = {};
+            var date = '';
+            var months = ['January','February','March','April','May','June','July','August',
+                          'September','October','November','December'];
+            {% for song in songs %}
+            date = new Date({{song[4]}}*1000)
+            var minutes = "0" + date.getMinutes();
+            s = {
+                name: "{{song[0]}}",
+                gender: "{{song[1]}}",
+                artist: "{{song[2]}}",
+                album: "{{song[3]}}",
+                day: date.getDate(),
+                month: months[date.getMonth()],
+                year: date.getFullYear(),
+                hour: date.getHours(),
+                time: date.getHours()+ ':' + minutes.substr(minutes.length-2),
+                timestamp: date,
+                icon:  "{{song[5]}}"
+            }
+            songs.push(s);
+            {% endfor %}
+            console.log(songs);
+            render(songs)
+        });
+
+    </script>
 </body>
 </html>
