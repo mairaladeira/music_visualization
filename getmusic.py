@@ -25,7 +25,7 @@ class GetMusic:
         self.time_songs = []
         self.start_time = time.time()
         self.csv = []
-        #self.genders_list = set()
+        self.genders_list = set()
         self.csvfile = open('data.csv', 'w')
         fieldnames = ['Name', 'Gender', 'Timestamp', 'Artist']
         self.csv_writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames,delimiter=',')
@@ -54,7 +54,11 @@ class GetMusic:
         data = json_obj['recenttracks']['track']
         info = json_obj['recenttracks']['@attr']
         if page == 1:
-            for i in range(int(info['totalPages']), 1, -1):
+            if int(info['totalPages']) > 10:
+                total_pages = 10
+            else:
+                total_pages = int(info['totalPages'])
+            for i in range(total_pages, 1, -1):
                 print('getting musics from: '+str(i))
                 self.get_music(i)
 
@@ -84,21 +88,28 @@ class GetMusic:
             json_obj = r.json()
             #print(json_obj)
             gender_obj = 'other'
-            if 'tag' in json_obj['toptags']:
-                i = 0
-                for tag in json_obj['toptags']['tag']:
-                    if 'name' in tag:
-                        try:
-                            #self.genders_list.add(tag['name'])
-                            if i == 0:
-                                t = tag['name']
+            if song['name'] == 'Carousel Ride':
+                gender_obj = 'pop'
+            if 'toptags' in json_obj:
+                if 'tag' in json_obj['toptags']:
+                    i = 0
+                    for tag in json_obj['toptags']['tag']:
+                        if 'name' in tag:
+                            try:
+                                #self.genders_list.add(tag['name'])
+                                if i == 0:
+                                    t = tag['name']
+                                    gender = self.parser_gender(t)
+                                    if gender != '':
+                                        gender_obj = gender
+                                        i += 1
+                            except Exception as e:
+                                #print(e)
+                                t = json_obj['toptags']['tag']['name']
                                 gender = self.parser_gender(t)
                                 if gender != '':
                                     gender_obj = gender
-                                    i += 1
-                        except Exception as e:
-                            #print(e)
-                            continue
+                                continue
             song_obj = {
                 'name': song['name'].replace("'", "\'"),
                 'artist': song['artist']['#text'],
@@ -158,38 +169,82 @@ class GetMusic:
         elif 'date' in song:
             self.albums[self.encode_dict_key(song['album']['#text'])]['played'].append(song['date']['uts'])
 
-    @staticmethod
-    def parser_gender(tag):
+    def parser_gender(self, tag):
         """
-        classic(involving blues, jazz,soul), rock (alternative rock, progressive rock etc),hip-hop (rap),electronic, indie, pop, latin,others
         :param tag:
         :return:
         """
         gender = tag.lower()
-        acceptable_genders = ['classic', 'rock', 'hip-hop', 'electronic', 'indie', 'pop', 'latin']
+        """
+            1. Jazz/blues, Cool/West Coast, Vocals, Latin, Swing, Avant Garde Jazz, Fusion, Contemporary,
+               Country Blues, Classic Blues, Electric Blues, Acoustic Blues
+        """
+        jazz = ['blues', 'cool coast', 'jazz', 'west coast', 'vocals', 'latin', 'swing',
+                'fusion', 'contemporary', 'cool/west coast', 'classic', 'piano']
+        for j in jazz:
+            if re.search(r''+j, gender):
+                return 'jazz_blues'
+        """
+        4. Alternative/Indie, 80s Alternative, Punk, Goth/Industrial, Brit Pop/Brit Rock, Indie, Emo/Hardcore,
+        Electropop, ‘00s Alternative
+        """
+        indie = ['indie', 'alternative', 'punk', 'goth', 'industrial',
+                 'emo', 'hardcore', 'electropop', '00s alternative', 'brit', 'pop/brit']
+        for i in indie:
+            if re.search(r''+i, gender):
+                return 'alternative_indie'
+        """
+        7. Pop, Adult Contemporary, 80s rock, 70s rock, 60s pop, 90s pop, 00s pop, Teen
+        """
+        pop = ['pop', 'coldplay', 'best tracks', 'adult contemporary', '80s pop', '70s pop',
+               '60s pop', '90s pop', '00s', 'teen']
+        for p in pop:
+            if re.search(r''+p, gender):
+                return 'pop'
 
-        classic = ['blues', 'classic', 'jazz', 'soul']
-        for c in classic:
-            if re.search(r''+c, gender):
-                return 'classic'
-        if re.search(r'pop', gender):
-            return 'pop'
-        if re.search(r'rock', gender):
-            return 'rock'
-        latin = ['mpb', 'brazilian', 'brasileiro', 'sertanejo', 'espanhol', 'lespagnol', 'español', 'latin']
-        for l in latin:
-            if re.search(r''+l, gender):
-                return 'latin'
-        hiphop = ['hip-hop', 'hip hop', 'rap']
+        """
+        5. Hip-hop/Rap, Old School, East Coast, 90s hip-hop/rap, International,
+           Hitmakers, Instrumental, Southern, Midwest, West Coast
+        """
+        hiphop = ['hip-hop', 'hip hop', 'rap', 'trip hop', 'trip-hop', 'old school', 'east coast',
+                  'international', 'hitmakers', 'instrumental', 'southern', 'midwest', 'west coast']
         for h in hiphop:
             if re.search(r''+h, gender):
-                return 'hip-hop'
-        electronic = ['electro', 'house', 'trance', 'techno']
+                return 'hip-hop_rap'
+
+        """
+            Rock, 60s rock, 50s rock, Progressive/Art, Psychedelic, Jam, 80s rock, 90s rock, Surf, Hard Rock
+        """
+        rock = ['rock', '50s', '60s', '80s', '90s', 'paul mccartney', 'pink floyd',
+                'psychedelic', 'progressive/art', 'jam', 'surf', 'u2']
+        for r in rock:
+            if re.search(r''+r, gender):
+                return 'rock'
+        """
+        3. Metal, Classic Metal, Hair, Alt Metal, Black/Death, Trash metal, Heavy Metal
+        """
+        metal = ['metal', 'hair', 'black/death']
+        for m in metal:
+            if re.search(r''+m, gender):
+                return 'metal'
+
+        """
+        6. Dance/Electronic, Ambient, Breakbeat, Downtempo, Techno, Electronica, House, Trance
+        """
+        electronic = ['electro', 'house', 'trance', 'techno', 'eclectonia', 'dance', 'party',
+                      'ambient', 'breakbeat', 'downtempo', 'electronica']
         for e in electronic:
             if re.search(r''+e, gender):
-                return 'electronic'
-        if re.search(r'indie', gender):
-            return 'indie'
+                return 'dance_electronic'
+
+        """
+        8. R&B/Soul, Classic Soul, Classic R&B, Funk, Disco, Contemporary
+        """
+        rebsoul = ['r&b', 'soul', 'funk', 'disco', 'contemporary']
+        for r in rebsoul:
+            if re.search(r''+r, gender):
+                return 'reb_soul'
+        self.genders_list.add(gender)
         return ''
 
     @staticmethod
@@ -197,8 +252,7 @@ class GetMusic:
         return ''
 
     def cache_data(self):
-        #print(self.genders_list)
-
+        print(self.genders_list)
         self.csvfile.close()
         self.time_songs = sorted(self.time_songs, key=itemgetter(4))
 
@@ -271,7 +325,7 @@ class GetMusic:
                 print(e)
 
 
-#test = GetMusic('gabrielahrlr')
+#test = GetMusic('ernestollamas')
 #test.get_cache_data()
 #print(test.get_time_songs())
 #print(test.get_songs())
