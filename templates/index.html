@@ -11,40 +11,53 @@
 </head>
 <body>
     <header>EM-DMKM Visualization Project</header>
-    <ul id="hours_axis">
-        <li>23</li>
-        <li>22</li>
-        <li>21</li>
-        <li>20</li>
-        <li>19</li>
-        <li>18</li>
-        <li>17</li>
-        <li>16</li>
-        <li>15</li>
-        <li>14</li>
-        <li>13</li>
-        <li>12</li>
-        <li>11</li>
-        <li>10</li>
-        <li>9</li>
-        <li>8</li>
-        <li>7</li>
-        <li>6</li>
-        <li>5</li>
-        <li>4</li>
-        <li>3</li>
-        <li>2</li>
-        <li>1</li>
-        <li>0</li>
-    </ul>
-    <div id="visualization">
-
+    <div class="content">
+        <ul id="hours_axis">
+            <li>0</li>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+            <li>11</li>
+            <li>12</li>
+            <li>13</li>
+            <li>14</li>
+            <li>15</li>
+            <li>16</li>
+            <li>17</li>
+            <li>18</li>
+            <li>19</li>
+            <li>20</li>
+            <li>21</li>
+            <li>22</li>
+            <li>23</li>
+        </ul>
+        <div id="visualization">
+        </div>
+        <ul class="days_axis"></ul>
+        <ul class="months_axis"></ul>
+        <ul class="years_axis"></ul>
+        <h3 id="histogram_title">Histogram Representation</h3>
+        <div id="histogram_div">
+            <div id="frequency"></div>
+            <div id="histogram"></div>
+            <ul class="days_axis"></ul>
+            <ul class="months_axis"></ul>
+            <ul class="years_axis"></ul>
+        </div>
     </div>
     <footer>
         <ul id="data-source">
-            <li id="gabrielahrlr">Gabriela</li>
-            <li id="ladeira_maira">Maira</li>
             <li id="mehreenikram">Mehreen</li>
+            <li id="ladeira_maira">Maíra</li>
+            <li id="gabrielahrlr">Gabriela</li>
+            <li id="ernestollamas">Ernesto</li>
         </ul>
     </footer>
     <script>
@@ -76,7 +89,7 @@
             }
             {% endfor %}
             console.log(songs);
-            render(songs)
+            render_main_visualization(songs)
         });
 
     </script>

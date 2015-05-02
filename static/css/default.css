@@ -4,22 +4,49 @@ body {
 }
 
 header {
-    padding-bottom: 10px;
+    padding: 7px 0;
     text-align: center;
     font-size: 25px;
+    width: 100%;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    background-color: white;
+    left: 0;
 }
 
 #visualization {
-    border: 1px solid;
+    border: 1px solid #999;
     float: left;
+    margin-left: 20px;
+    height: 503px;
+    width: 100%;
+}
+
+.day.mon, .day.tue, .day.wed, .day.thu, .day.fri {
     background-color: #eeeeee;
 }
+.day.sat, .day.sun {
+    background-color: #e5e5e5;
+}
+.content {
+    position: relative;
+    margin-top: 40px;
+    z-index: 3;
+    width: 100%;
+}
 #hours_axis {
-    float: left;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    padding-right: 5px;
+  float: left;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-right: 10px;
+  position: absolute;
+  top: 0px;
+  background-color: white;
+  left: -10px;
+  padding-left: 10px;
+  width: 10px;
 }
 #hours_axis li{
     height: 17px;
@@ -30,23 +57,25 @@ header {
 .day {
     float: left;
 }
-#visualization > :nth-child(even) {
-    border-right: 1px solid #ddd;
+#visualization > :nth-child(even), #histogram > :nth-child(even){
+    border-left: 1px solid #fff;
 
 }
-#visualization > :nth-child(odd) {
-    border-right: 1px solid #fff;
+#visualization > :nth-child(odd), #histogram > :nth-child(odd) {
+    border-left: 1px solid #fff;
 
 }
-
-#visualization > :last-child {
-    border-right: none;
+.day.day_1 {
+    border-left: 1px solid #999 !important;
 }
-.day > :nth-child(even) {
+#visualization > :first-child {
+    border-left: none;
+}
+#visualization .day > :nth-child(even) {
     border-bottom: 1px solid #ddd;
 
 }
-.day > :nth-child(odd) {
+#visualization .day > :nth-child(odd) {
     border-bottom: 1px solid #fff;
 
 }
@@ -69,7 +98,7 @@ footer {
 .square {
     height: 5px;
 }
-.square.classic {
+.square.jazz_blues {
     background-color: #774306;
 }
 
@@ -77,25 +106,192 @@ footer {
     background-color: #FE0000;
 }
 
-.square.latin {
+.square.metal {
     background-color: #97253F;
 }
 .square.rock {
     background-color: #016AAB;
 }
 
-.square.hip-hop {
+.square.hip-hop_rap {
     background-color: #019F4C;
 }
 
-.square.electronic {
-    background-color: #019F4C;
+.square.dance_electronic {
+    background-color: #FE7314;
 }
 
-.square.indie {
+.square.alternative_indie {
     background-color: #6869A9;
 }
-
+.square.reb_soul {
+    background-color: #FBDE06;
+}
 .square.other {
     background-color: #F0C896;
+}
+
+.hour_18, .hour_12, .hour_6 {
+    border-bottom: 1px solid #999 !important
+}
+
+.days_axis {
+    clear: both;
+    list-style: none;
+    float: left;
+    padding: 0 0 0 20px;
+    margin: 5px 0;
+}
+
+.days_axis li {
+    float: left;
+    font-size: 8px;
+    width: 21px;
+    text-align: center;
+    opacity: 0;
+}
+
+.days_axis li:nth-child(3n+1){
+    opacity: 1;
+}
+
+.square:hover {
+    opacity: 0.8;
+}
+
+#data-source {
+    list-style: none;
+    position: fixed;
+    bottom: 0;
+    background-color: white;
+    right: 0;
+    padding: 10px 0;
+    margin: 0;
+    width: 100%;
+    z-index: 5;
+}
+#data-source li {
+    float: right;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+div.tooltip {
+    outline:none;
+}
+div.tooltip strong {
+    line-height:30px;
+}
+div.tooltip:hover {
+    text-decoration:none;
+}
+div.tooltip span {
+    z-index:100;
+    display:none;
+    padding:14px 20px;
+    margin-top:-30px;
+    margin-left:20px;
+    width:300px;
+    line-height:16px;
+}
+div.tooltip:hover span{
+    display:inline; 
+    position:absolute; 
+    color:#111;
+    border:1px solid #DCA; 
+    background:#fffAF0;
+    z-index: 500;
+}
+.tooltip_arrow {
+    z-index:20;
+    position:absolute;
+    top:19px;
+    border:0;
+    left:-12px;
+    background-image: url(../img/callout.gif);
+    width: 12px;
+    height: 22px;
+}
+
+/*CSS3 extras*/
+div.tooltip span
+{
+    border-radius:4px;
+    box-shadow: 5px 5px 8px #CCC;
+}
+
+div.tooltip span .name {
+    width: 100%;
+    text-align: center;
+}
+
+.bottom_hours div.tooltip span {
+    margin-top: -85px;
+}
+
+.bottom_hours .tooltip_arrow {
+    top: 74px;
+}
+
+.top_hours div.tooltip span {
+    margin-top: -15px;
+}
+
+.top_hours .tooltip_arrow {
+    top: 3px;
+}
+
+.months_axis, .years_axis {
+    clear: both;
+    list-style: none;
+    float: left;
+    padding: 0 0 0 20px;
+    margin: 1px 0;
+}
+
+.months_axis li, .years_axis li {
+    float: left;
+    font-size: 8px;
+    width: 11px;
+    text-align: center;
+}
+
+.years_axis :nth-child(odd) {
+    background-color: #eeeeee;
+}
+.years_axis :nth-child(even) {
+    background-color: #CCCCCC;
+}
+
+#histogram .square {
+    height: 20px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+#histogram {
+    position: relative;
+    left: 0;
+    top: 0;
+    height: 503px;
+    float: left;
+    clear: both;
+    margin-left: 20px;
+    border: 1px solid #999;
+    width: 100%;
+
+}
+#histogram .day {
+    height: 100%;
+}
+
+#histogram_div {
+    position: relative;
+    width: 100%;
+}
+
+h3 {
+    float: left;
+    clear: both;
+    margin-left: 20px;
 }
