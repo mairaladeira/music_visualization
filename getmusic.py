@@ -73,6 +73,10 @@ class GetMusic:
 
     def format_song(self, song):
         #print(song)
+        if 'date' in song:
+            song_date = song['date']['uts']
+        else:
+            song_date = '0'
         if self.encode_dict_key(song['name']) not in self.songs:
             url = self.lastfm_url+"&method=track.gettoptags&artist="+urllib.parse.quote_plus(song['artist']['#text'])+\
                   "&track="+urllib.parse.quote_plus(song['name'])+"&limit=2&autocorrect=1"
@@ -99,7 +103,7 @@ class GetMusic:
                 'name': song['name'].replace("'", "\'"),
                 'artist': song['artist']['#text'],
                 'album': song['album']['#text'],
-                'played': [song['date']['uts']],
+                'played': [song_date],
                 'icon': song['image'][2]['#text'],
                 'gender': gender_obj
             }
@@ -117,13 +121,13 @@ class GetMusic:
 
         self.csv_writer.writerow({'Name': song['name'].replace("'", "\'"),
                                   'Gender': self.songs[self.encode_dict_key(song['name'])]['gender'],
-                                  'Timestamp': song['date']['uts'],
+                                  'Timestamp': song_date,
                                   'Artist': song['artist']['#text']})
         t_song = [song['name'].replace("'", "\'"),
                   self.songs[self.encode_dict_key(song['name'])]['gender'],
                   song['artist']['#text'],
                   song['album']['#text'],
-                  song['date']['uts'],
+                  song_date,
                   song['image'][2]['#text']]
         self.time_songs.append(t_song)
         if self.encode_dict_key(song['artist']['#text']) not in self.artists:
@@ -267,7 +271,7 @@ class GetMusic:
                 print(e)
 
 
-#test = GetMusic('ladeira_maira')
+#test = GetMusic('gabrielahrlr')
 #test.get_cache_data()
 #print(test.get_time_songs())
 #print(test.get_songs())

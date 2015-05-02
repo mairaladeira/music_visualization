@@ -12,7 +12,7 @@ artists = []
 albums = []
 genders = []
 songs_by_time = []
-username = 'ladeira_maira'
+username = 'gabrielahrlr'
 
 def open_browser():
     """

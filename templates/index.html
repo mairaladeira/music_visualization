@@ -11,6 +11,32 @@
 </head>
 <body>
     <header>EM-DMKM Visualization Project</header>
+    <ul id="hours_axis">
+        <li>23</li>
+        <li>22</li>
+        <li>21</li>
+        <li>20</li>
+        <li>19</li>
+        <li>18</li>
+        <li>17</li>
+        <li>16</li>
+        <li>15</li>
+        <li>14</li>
+        <li>13</li>
+        <li>12</li>
+        <li>11</li>
+        <li>10</li>
+        <li>9</li>
+        <li>8</li>
+        <li>7</li>
+        <li>6</li>
+        <li>5</li>
+        <li>4</li>
+        <li>3</li>
+        <li>2</li>
+        <li>1</li>
+        <li>0</li>
+    </ul>
     <div id="visualization">
 
     </div>
@@ -29,22 +55,25 @@
             var months = ['January','February','March','April','May','June','July','August',
                           'September','October','November','December'];
             {% for song in songs %}
-            date = new Date({{song[4]}}*1000)
-            var minutes = "0" + date.getMinutes();
-            s = {
-                name: "{{song[0]}}",
-                gender: "{{song[1]}}",
-                artist: "{{song[2]}}",
-                album: "{{song[3]}}",
-                day: date.getDate(),
-                month: months[date.getMonth()],
-                year: date.getFullYear(),
-                hour: date.getHours(),
-                time: date.getHours()+ ':' + minutes.substr(minutes.length-2),
-                timestamp: date,
-                icon:  "{{song[5]}}"
+            var date_ts = {{song[4]}};
+            if (date_ts != 0) {
+                date = new Date({{song[4]}}*1000)
+                var minutes = "0" + date.getMinutes();
+                s = {
+                    name: "{{song[0]}}",
+                    gender: "{{song[1]}}",
+                    artist: "{{song[2]}}",
+                    album: "{{song[3]}}",
+                    day: date.getDate(),
+                    month: months[date.getMonth()],
+                    year: date.getFullYear(),
+                    hour: date.getHours(),
+                    time: date.getHours()+ ':' + minutes.substr(minutes.length-2),
+                    timestamp: date,
+                    icon:  "{{song[5]}}"
+                }
+                songs.push(s);
             }
-            songs.push(s);
             {% endfor %}
             console.log(songs);
             render(songs)

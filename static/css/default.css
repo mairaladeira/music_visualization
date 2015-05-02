@@ -1,13 +1,62 @@
 body {
     margin-right: 20px;
+    font-family: sans-serif;
+}
+
+header {
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 25px;
+}
+
+#visualization {
+    border: 1px solid;
+    float: left;
+    background-color: #eeeeee;
+}
+#hours_axis {
+    float: left;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-right: 5px;
+}
+#hours_axis li{
+    height: 17px;
+    text-align: right;
+    padding-top: 4px;
+    font-size: 11px;
 }
 .day {
     float: left;
 }
+#visualization > :nth-child(even) {
+    border-right: 1px solid #ddd;
+
+}
+#visualization > :nth-child(odd) {
+    border-right: 1px solid #fff;
+
+}
+
+#visualization > :last-child {
+    border-right: none;
+}
+.day > :nth-child(even) {
+    border-bottom: 1px solid #ddd;
+
+}
+.day > :nth-child(odd) {
+    border-bottom: 1px solid #fff;
+
+}
+
+.day > :last-child {
+    border-bottom: none;
+}
 .hour{
-    width: 30px;
-    height: 25px;
-    border: 1px solid;
+    width: 20px;
+    height: 20px;
 }
 
 footer {
@@ -21,32 +70,32 @@ footer {
     height: 5px;
 }
 .square.classic {
-    background-color: orange;
+    background-color: #774306;
 }
 
 .square.pop {
-    background-color: pink;
+    background-color: #FE0000;
 }
 
 .square.latin {
-    background-color: yellow;
+    background-color: #97253F;
 }
 .square.rock {
-    background-color: purple;
+    background-color: #016AAB;
 }
 
 .square.hip-hop {
-    background-color: turquoise;
+    background-color: #019F4C;
 }
 
 .square.electronic {
-    background-color: blue;
+    background-color: #019F4C;
 }
 
 .square.indie {
-    background-color: green;
+    background-color: #6869A9;
 }
 
 .square.other {
-    background-color: gray;
+    background-color: #F0C896;
 }
