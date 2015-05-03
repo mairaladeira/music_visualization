@@ -318,6 +318,7 @@ $(document).ready(function(){
         var histogram = $('#histogram');
         histogram.removeClass('show_approximation');
         $('canvas.show').removeClass('show');
+        $('.button.getLine').removeClass('selected');
     });
     $('.button.getLine').bind('click', function(){
         var canvas = $(this).attr("data-id");
@@ -325,11 +326,13 @@ $(document).ready(function(){
         var histogram = $('#histogram');
         if (canvas_div.hasClass('show')) {
             canvas_div.removeClass('show');
+            $(this).removeClass('selected');
             if($('canvas.show').length == 0)
                 histogram.removeClass('show_approximation');
         }
         else {
             canvas_div.addClass('show');
+            $(this).addClass('selected');
             histogram.addClass('show_approximation');
         }
     });

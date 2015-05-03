@@ -126,17 +126,22 @@ class GetMusic:
             self.songs[self.encode_dict_key(song['name'])] = song_obj
         elif 'date' in song:
             self.songs[self.encode_dict_key(song['name'])]['played'].append(song['date']['uts'])
-
+        #For Gabriela:
+        #ADD mood code here with name = song['name'] and artist = song['artist']['#text']
         self.csv_writer.writerow({'Name': song['name'].replace("'", "\'"),
                                   'Gender': self.songs[self.encode_dict_key(song['name'])]['gender'],
                                   'Timestamp': song_date,
-                                  'Artist': song['artist']['#text']})
+                                  'Artist': song['artist']['#text']
+                                  #add mood here for csv as 'Mood': your_mood
+                                })
         t_song = [song['name'].replace("'", "\'"),
                   self.songs[self.encode_dict_key(song['name'])]['gender'],
                   song['artist']['#text'],
                   song['album']['#text'],
                   song_date,
-                  song['image'][2]['#text']]
+                  song['image'][2]['#text']
+                  #Add mood here as your_mood (no key)
+                ]
         self.time_songs.append(t_song)
         if self.encode_dict_key(song['artist']['#text']) not in self.artists:
             artist_obj = {
