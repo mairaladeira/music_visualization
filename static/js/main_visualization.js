@@ -2,7 +2,7 @@
  * Created by Maira on 5/1/15.
  */
 var square_size = 20;
-var height = 0;
+var height = 503;
 var histogram_square_height = 0;
 function render_main_visualization(songs){
     //this function expects the songs array to be sorted from the oldest to the newest.
@@ -63,13 +63,15 @@ function render_main_visualization(songs){
 
     $.each(songs, function(i,v){
         var song_date = v.timestamp.getDate()+'-'+v.timestamp.getMonth()+'-'+v.timestamp.getFullYear();
-        var element_data = '<div class="square '+ v.gender+' tooltip">' +
+        var element_data = '<div class="square '+ v.gender+' tooltip" data-class="'+ format_music_name_for_html(v.name)+'">' +
                                 '<span class="extra_info">' +
                                     '<div class="tooltip_arrow"></div>' +
                                     '<div class="info">' +
                                         '<div class="name"><strong>'+ v.name+'</strong></div>' +
                                         '<div class="artist"><strong>Artist: </strong>'+v.artist+'</div>' +
                                         '<div class="album"><strong>Album: </strong>'+v.album+'</div>' +
+                                        '<div class="gender"><strong>Genre: </strong>'+get_gender_text(v.gender)+'</div>'+
+                                        '<div class="list_frequency">Listened <strong>'+ v.frequency+'</strong> Times</div>'+
                                     '</div>'+
                                 '</span>' +
                            '</div>';
@@ -79,6 +81,47 @@ function render_main_visualization(songs){
     });
     get_squares_size();
     get_histogram_size();
+    bind_music_events();
+}
+
+function format_music_name_for_html(name) {
+    var format_name = replaceAll(' ', '_', name);
+    format_name = replaceAll('(', '_', format_name);
+    format_name = replaceAll(')', '_', format_name);
+    format_name = replaceAll('\'', '_', format_name);
+    format_name = replaceAll(',', '_', format_name);
+    format_name = replaceAll('.', '_', format_name);
+    return format_name;
+}
+function replaceAll(find, replace, str) {
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+function escapeRegExp(string) {
+    return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+function get_gender_text(gender) {
+    switch (gender) {
+        case 'jazz_blues':
+            return 'Jazz/Blues';
+        case 'pop':
+            return 'Pop';
+        case 'metal':
+            return 'Metal';
+        case 'rock':
+            return 'Rock';
+        case 'hip-hop_rap':
+            return 'Hip-hop/Rap';
+        case 'dance_electronic':
+            return 'Dance/Electronic';
+        case 'alternative_indie':
+            return 'Alternative/Indie';
+        case 'reb_soul':
+            return 'R&B/Soul';
+        case 'other':
+            return 'Other';
+    }
 }
 
 function create_hours_divs(date) {
@@ -120,7 +163,7 @@ function get_histogram_size() {
         if (amount_children > max)
             max = amount_children;
     });
-    histogram_square_height = Math.floor(histogram.height()/max);
+    histogram_square_height = Math.floor(503/max);
     height = histogram_square_height*max;
     histogram.height(height);
     histogram_days.find('.square').height(histogram_square_height);
@@ -243,11 +286,32 @@ function get_histogram_x_y(point) {
     return {x: Math.floor((point.x*(square_size+1))+(square_size/2)-1), y: Math.floor(height-point.y*histogram_square_height)-2};
 }
 
+function bind_music_events(){
+    var square = $('.hour .square.tooltip');
+    square.bind('mouseover', function(){
+        var music = $(this).attr('data-class');
+        if (square.length < 2000) {
+            square.addClass('unfocus');
+        $('.hour .square.tooltip[data-class="'+music+'"]').removeClass('unfocus').css('background-color', '#000000');
+        } else {
+            $('.hour .square.tooltip[data-class="'+music+'"]').css('background-color', '#000000');
+        }
+    });
+
+    square.bind('mouseout', function(){
+        if (square.length < 2000) {
+            $('.hour .square.tooltip').removeClass('unfocus').css('background-color', '');
+        } else {
+            $('.hour .square.tooltip').css('background-color', '');
+        }
+    });
+}
+
 $(document).ready(function(){
     $(window).bind('scroll', function(){
         $('#hours_axis').css('left', $(this).scrollLeft()-10);
         $('#frequency').css('left', $(this).scrollLeft()-10);
-        $('#continuous_approximation').css('left', $(this).scrollLeft()+20);
+        $('.buttons').css('left', $(this).scrollLeft()+20);
         $('#histogram_title').css('left', $(this).scrollLeft()+20);
     });
     $('#hide_continuous_approximations').bind('click', function(){
@@ -269,4 +333,59 @@ $(document).ready(function(){
             histogram.addClass('show_approximation');
         }
     });
+
+    $('.change_data').bind('click', function(){
+        var id = $(this).attr('id');
+        square_size = 20;
+        height = 503;
+        histogram_square_height = 0;
+        $('#visualization').html('');
+        $('#histogram').html('');
+        $('.days_axis').html('');
+        $('.months_axis').html('');
+        $('.years_axis').html('');
+        $('#frequency').html('');
+        $('#histogram_canvas').html('');
+        $('#jazz_canvas').html('');
+        $('#pop_canvas').html('');
+        $('#metal_canvas').html('');
+        $('#rock_canvas').html('');
+        $('#hip-hop_canvas').html('');
+        $('#dance_canvas').html('');
+        $('#alternative_canvas').html('');
+        $('#reb_canvas').html('');
+        $('#others_canvas').html('');
+        $('#datasource').html(id);
+        $('.change_data').removeClass('selected');
+        $('#'+id).addClass('selected');
+        $.post('getData', {username:id}).done(function(data){
+            data = JSON.parse(data);
+            var songs = [];
+            var months = ['January','February','March','April','May','June','July','August',
+                          'September','October','November','December'];
+            $.each(data, function(i,v){
+                var date_ts = parseInt(v[4], 10);
+                if (date_ts != 0) {
+                    var date = new Date(date_ts*1000)
+                    var minutes = "0" + date.getMinutes();
+                    var s = {
+                        name: v[0],
+                        gender: v[1],
+                        artist: v[2],
+                        album: v[3],
+                        day: date.getDate(),
+                        month: months[date.getMonth()],
+                        year: date.getFullYear(),
+                        hour: date.getHours(),
+                        time: date.getHours()+ ':' + minutes.substr(minutes.length-2),
+                        timestamp: date,
+                        icon:  v[5],
+                        frequency: v[6]
+                    };
+                    songs.push(s);
+                }
+            });
+            render_main_visualization(songs);
+        });
+    })
 });

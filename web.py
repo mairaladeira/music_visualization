@@ -1,5 +1,5 @@
 __author__ = 'Maira'
-from flask import Flask, render_template, Markup
+from flask import Flask, render_template, Markup, request
 import webbrowser
 import threading
 import time
@@ -35,8 +35,7 @@ def hello():
         update_data(username)
     except Exception as e:
         print(e)
-    print(songs_by_time)
-    return render_template('index.html', songs=songs_by_time)
+    return render_template('index.html', username=username, songs=songs_by_time)
 
 
 def update_data(uname=''):
@@ -55,7 +54,6 @@ def update_data(uname=''):
     albums_l = gm.get_albums()
     genders_l = gm.get_genders()
     songs_by_time = gm.get_time_songs()
-    print(songs_by_time)
     for s in songs_l:
         songs.append(json.dumps(songs_l[s]))
     for a in artists_l:
@@ -87,8 +85,14 @@ def upload(button):
     :param button: the domId of the button that was clicked
     :return:
     """
+    global songs_by_time
+    global username
     print(button)
     try:
+        if button == 'getData':
+            username = request.form['username']
+            update_data(username)
+            return json.dumps(songs_by_time)
         return "Undefined button: " + button
     except Exception as e:
         print(e)

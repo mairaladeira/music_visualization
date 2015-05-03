@@ -10,7 +10,7 @@
 
 </head>
 <body>
-    <header>EM-DMKM Visualization Project</header>
+    <header>EM-DMKM Visualization Project - Data source: <span id="datasource">{{username}}</span></header>
     <div class="content">
         <ul id="hours_axis">
             <li>0</li>
@@ -90,25 +90,24 @@
             <li><span class="other"></span>Other</li>
         </ul>
         <ul id="data-source">
-            <li id="mehreenikram">Mehreen</li>
-            <li id="ladeira_maira">Maíra</li>
-            <li id="gabrielahrlr">Gabriela</li>
-            <li id="ernestollamas">Ernesto</li>
+            <li class="change_data" id="mehreenikram">Mehreen</li>
+            <li class="change_data" id="ladeira_maira">Maíra</li>
+            <li class="change_data" id="gabrielahrlr">Gabriela</li>
+            <li class="change_data" id="ernestollamas">Ernesto</li>
         </ul>
     </footer>
     <script>
         $(function(){
-            songs = [];
-            var s = {};
+            var songs = [];
             var date = '';
             var months = ['January','February','March','April','May','June','July','August',
                           'September','October','November','December'];
             {% for song in songs %}
             var date_ts = {{song[4]}};
             if (date_ts != 0) {
-                date = new Date({{song[4]}}*1000)
+                date = new Date(date_ts*1000);
                 var minutes = "0" + date.getMinutes();
-                s = {
+                var s = {
                     name: "{{song[0]}}",
                     gender: "{{song[1]}}",
                     artist: "{{song[2]}}",
@@ -119,12 +118,14 @@
                     hour: date.getHours(),
                     time: date.getHours()+ ':' + minutes.substr(minutes.length-2),
                     timestamp: date,
-                    icon:  "{{song[5]}}"
+                    icon:  "{{song[5]}}",
+                    frequency: {{song[6]}}
                 }
                 songs.push(s);
             }
             {% endfor %}
-            render_main_visualization(songs)
+            render_main_visualization(songs);
+            $('#{{username}}').addClass('selected');
         });
 
     </script>

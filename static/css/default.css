@@ -15,12 +15,19 @@ header {
     left: 0;
 }
 
+header span {
+    color: #016AAB;
+}
+
 #visualization {
     border: 1px solid #999;
     float: left;
     margin-left: 20px;
     height: 503px;
     width: 100%;
+    background-image: url('../img/loading.gif');
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .day.mon, .day.tue, .day.wed, .day.thu, .day.fri {
@@ -96,6 +103,9 @@ footer {
 }
 .square span {
     display: none;
+}
+.square.unfocus {
+    opacity: 0.5 !important;
 }
 .square {
     height: 5px;
@@ -209,6 +219,10 @@ footer ul {
     cursor: pointer;
 }
 
+#data-source li:hover, #data-source li.selected {
+    color: #016AAB;
+}
+
 #genders_subtitle li{
     float: left;
     margin: 0;
@@ -226,12 +240,12 @@ div.tooltip {
     outline:none;
 }
 div.tooltip strong {
-    line-height:30px;
+    line-height:1.5;
 }
 div.tooltip:hover {
     text-decoration:none;
 }
-div.tooltip span {
+div.tooltip span.extra_info {
     z-index:100;
     display:none;
     padding:14px 20px;
@@ -240,7 +254,7 @@ div.tooltip span {
     width:300px;
     line-height:16px;
 }
-div.tooltip:hover span{
+div.tooltip:hover span.extra_info{
     display:inline; 
     position:absolute; 
     color:#111;
@@ -260,17 +274,24 @@ div.tooltip:hover span{
 }
 
 /*CSS3 extras*/
-div.tooltip span
+div.tooltip span.extra_info
 {
     border-radius:4px;
     box-shadow: 5px 5px 8px #CCC;
 }
 
-div.tooltip span .name {
+div.tooltip span.extra_info .info div.name {
     width: 100%;
     text-align: center;
+    padding: 2px 0;
+    float: none;
+    height: auto;
 }
-
+div.tooltip span.extra_info .info div {
+    clear: both;
+    float: left;
+    height: auto;
+}
 .bottom_hours div.tooltip span {
     margin-top: -85px;
 }
@@ -279,7 +300,7 @@ div.tooltip span .name {
     top: 74px;
 }
 
-.top_hours div.tooltip span {
+.top_hours div.tooltip span.extra_info {
     margin-top: -15px;
 }
 
@@ -325,6 +346,9 @@ div.tooltip span .name {
     margin-left: 20px;
     border: 1px solid #999;
     width: 100%;
+    background-image: url('../img/loading.gif');
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 #histogram.show_approximation {
@@ -400,8 +424,13 @@ canvas.show {
     cursor: pointer;
 }
 
+.buttons li:hover, .buttons li.selected {
+    color: #083a59;
+}
+
 .buttons li.title {
     cursor: default;
+    color: #016AAB;
 }
 
 

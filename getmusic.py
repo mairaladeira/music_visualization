@@ -54,7 +54,7 @@ class GetMusic:
         data = json_obj['recenttracks']['track']
         info = json_obj['recenttracks']['@attr']
         if page == 1:
-            if int(info['totalPages']) > 10:
+            if int(info['totalPages']) > 1000:
                 total_pages = 10
             else:
                 total_pages = int(info['totalPages'])
@@ -65,9 +65,6 @@ class GetMusic:
             print('getting musics from: 1')
         for s in data:
             self.format_song(s)
-        #for key in self.genders.keys():
-            #print(key)
-        #TODO: add the get of new pages
 
     @staticmethod
     def encode_dict_key(key):
@@ -252,7 +249,10 @@ class GetMusic:
         return ''
 
     def cache_data(self):
-        print(self.genders_list)
+        i = 0
+        for ts in self.time_songs:
+            self.time_songs[i].append(len(self.songs[self.encode_dict_key(ts[0])]['played']))
+            i += 1
         self.csvfile.close()
         self.time_songs = sorted(self.time_songs, key=itemgetter(4))
 
@@ -324,7 +324,7 @@ class GetMusic:
             except Exception as e:
                 print(e)
 
-
+#ernestollamas, gabrielahrlr, ladeira_maira, mehreenikram
 #test = GetMusic('ernestollamas')
 #test.get_cache_data()
 #print(test.get_time_songs())
