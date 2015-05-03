@@ -5,7 +5,7 @@
     <title>DMKM Visualization project</title>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/default.css') }}">
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.canvasjs.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main_visualization.js') }}"></script>
 
 </head>
@@ -43,16 +43,52 @@
         <ul class="days_axis"></ul>
         <ul class="months_axis"></ul>
         <ul class="years_axis"></ul>
-        <h3 id="histogram_title">Histogram Representation</h3>
         <div id="histogram_div">
-            <div id="frequency"></div>
+            <h3 id="histogram_title">Histogram Representation</h3>
+
+            <ul class="buttons">
+                <li class="title">Evolution lines:</li>
+                <li class="button getLine" id="show_jazz_line" data-id="jazz_canvas">Jazz/Blues</li>
+                <li class="button getLine" id="show_pop_line" data-id="pop_canvas">Pop</li>
+                <li class="button getLine" id="show_metal_line" data-id="metal_canvas">Metal</li>
+                <li class="button getLine" id="show_rock_line" data-id="rock_canvas">Rock</li>
+                <li class="button getLine" id="show_hip-hop_line" data-id="hip-hop_canvas">Hip-hop/Rap</li>
+                <li class="button getLine" id="show_dance_line" data-id="dance_canvas">Dance/Electronic</li>
+                <li class="button getLine" id="show_alternative_line" data-id="alternative_canvas">Alternative/indie</li>
+                <li class="button getLine" id="show_reb_line" data-id="reb_canvas">R&B/Soul</li>
+                <li class="button getLine" id="show_others_line" data-id="others_canvas">Others</li>
+                <li class="button getLine" id="show_all_line" data-id="histogram_canvas">All genders</li>
+                <li class="button" id="hide_continuous_approximations">Hide all Evolutions</li>
+            </ul>
+            <ul id="frequency"></ul>
             <div id="histogram"></div>
             <ul class="days_axis"></ul>
             <ul class="months_axis"></ul>
             <ul class="years_axis"></ul>
+            <canvas id="histogram_canvas"></canvas>
+            <canvas id="jazz_canvas"></canvas>
+            <canvas id="pop_canvas"></canvas>
+            <canvas id="metal_canvas"></canvas>
+            <canvas id="rock_canvas"></canvas>
+            <canvas id="hip-hop_canvas"></canvas>
+            <canvas id="dance_canvas"></canvas>
+            <canvas id="alternative_canvas"></canvas>
+            <canvas id="reb_canvas"></canvas>
+            <canvas id="others_canvas"></canvas>
         </div>
     </div>
     <footer>
+        <ul id="genders_subtitle">
+            <li><span class="jazz_blues"></span>Jazz/blues</li>
+            <li><span class="pop"></span>Pop</li>
+            <li><span class="metal"></span>Metal</li>
+            <li><span class="rock"></span>Rock</li>
+            <li><span class="hip-hop_rap"></span>Hip-hop/Rap</li>
+            <li><span class="dance_electronic"></span>Dance/Electronic</li>
+            <li><span class="alternative_indie"></span>Alternative/Indie</li>
+            <li><span class="reb_soul"></span>R&B/Soul</li>
+            <li><span class="other"></span>Other</li>
+        </ul>
         <ul id="data-source">
             <li id="mehreenikram">Mehreen</li>
             <li id="ladeira_maira">Maíra</li>
@@ -88,7 +124,6 @@
                 songs.push(s);
             }
             {% endfor %}
-            console.log(songs);
             render_main_visualization(songs)
         });
 
