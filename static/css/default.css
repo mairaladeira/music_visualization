@@ -34,6 +34,8 @@ header {
     margin-top: 40px;
     z-index: 3;
     width: 100%;
+    float: left;
+    background-color: white;
 }
 #hours_axis {
   float: left;
@@ -98,37 +100,66 @@ footer {
 .square {
     height: 5px;
 }
-.square.jazz_blues {
+.jazz_blues {
     background-color: #774306;
 }
 
-.square.pop {
+.square.jazz_blues:hover {
+    background-color: #8C564B;
+}
+
+.pop {
     background-color: #FE0000;
 }
 
-.square.metal {
+.square.pop:hover {
+    background-color: #D62728;
+}
+
+.metal {
     background-color: #97253F;
 }
-.square.rock {
+.square.metal:hover {
+    background-color: #E377C2;
+}
+.rock {
     background-color: #016AAB;
 }
-
-.square.hip-hop_rap {
+.square.rock:hover {
+    background-color: #2CA3DA;
+}
+.hip-hop_rap {
     background-color: #019F4C;
 }
+.square.hip-hop_rap:hover {
+    background-color: #92C333;
+}
 
-.square.dance_electronic {
+.dance_electronic {
     background-color: #FE7314;
 }
+.square.dance_electronic:hover {
+    background-color: #FFBB78;
+}
 
-.square.alternative_indie {
+.alternative_indie {
     background-color: #6869A9;
 }
-.square.reb_soul {
+
+.square.alternative_indie:hover {
+    background-color: #9467BD;
+}
+.reb_soul {
     background-color: #FBDE06;
 }
-.square.other {
+.square.reb_soul:hover {
+    background-color: #BCBD22;
+}
+.other {
     background-color: #F0C896;
+}
+.square.other:hover {
+    background-color: #FBA27F;
 }
 
 .hour_18, .hour_12, .hour_6 {
@@ -155,25 +186,40 @@ footer {
     opacity: 1;
 }
 
-.square:hover {
-    opacity: 0.8;
-}
 
-#data-source {
-    list-style: none;
+footer {
     position: fixed;
     bottom: 0;
     background-color: white;
     right: 0;
-    padding: 10px 0;
+    padding: 5px 0;
     margin: 0;
     width: 100%;
     z-index: 5;
 }
+footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+}
 #data-source li {
     float: right;
-    padding: 0 10px;
+    padding: 5px 10px;
     cursor: pointer;
+}
+
+#genders_subtitle li{
+    float: left;
+    margin: 0;
+    padding-left: 10px;
+    padding-top: 8px;
+    font-size: 12px;
+}
+
+#genders_subtitle li span{
+    padding: 0 10px;
+    margin-right: 5px;
 }
 
 div.tooltip {
@@ -279,8 +325,12 @@ div.tooltip span .name {
     margin-left: 20px;
     border: 1px solid #999;
     width: 100%;
-
 }
+
+#histogram.show_approximation {
+    opacity: 0.5;
+}
+
 #histogram .day {
     height: 100%;
 }
@@ -288,10 +338,76 @@ div.tooltip span .name {
 #histogram_div {
     position: relative;
     width: 100%;
+    float: left;
+    margin-top: 100px;
 }
 
-h3 {
-    float: left;
-    clear: both;
+canvas {
+    position: absolute;
+    top: 0;
     margin-left: 20px;
+    border: none;
+    left: 0;
+    display: none;
+}
+
+canvas.show {
+    display: block;
+}
+
+#frequency {
+    float: left;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-right: 5px;
+    position: absolute;
+    top: 0;
+    background-color: white;
+    left: -10px;
+    padding-left: 15px;
+    width: 10px;
+    z-index: 10;
+    padding-bottom: 2px;
+}
+#frequency li {
+    font-size: 8px;
+    opacity: 0;
+}
+
+#frequency.unfrequent :nth-child(5n +1) {
+    opacity: 1;
+}
+
+#frequency.frequent :nth-child(10n +1) {
+    opacity: 1;
+}
+.buttons {
+    color: #016AAB;
+    font-size: 12px;
+    left: 20px;
+    clear: both;
+    margin: 0 0 6px 0;
+    position: absolute;
+    top: -20px;
+    list-style: none;
+    padding: 0;
+}
+
+.buttons li {
+    float: left;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.buttons li.title {
+    cursor: default;
+}
+
+
+#histogram_title {
+    position: absolute;
+    top: -60px;
+    left: 20px;
+    margin: 0;
 }
