@@ -65,6 +65,7 @@
             <ul class="days_axis"></ul>
             <ul class="months_axis"></ul>
             <ul class="years_axis"></ul>
+            <div id="canvas_overflow"></div>
             <canvas id="histogram_canvas"></canvas>
             <canvas id="jazz_canvas"></canvas>
             <canvas id="pop_canvas"></canvas>
@@ -75,6 +76,24 @@
             <canvas id="alternative_canvas"></canvas>
             <canvas id="reb_canvas"></canvas>
             <canvas id="others_canvas"></canvas>
+        </div>
+    </div>
+    <div id="music_overflow">
+        <div class="black_overflow"></div>
+        <div class="close">X</div>
+        <h3 class="name">SONG NAME</h3>
+        <div class="info">
+            <div class="artist"><strong>Artist: </strong><span>ARTIST NAME</span></div>
+            <div class="album"><strong>Album: </strong><span>ALBUM NAME</span></div>
+            <div class="frequency">Song listened <strong>10</strong> times</div>
+            <div class="play_time">Played on: <strong>01 May 2015 00:00</strong></div>
+            <div class="last_time">Last Time on: <strong>01 May 2015 00:00</strong></div>
+        </div>
+        <div class="music_icon">
+            <img src="http://userserve-ak.last.fm/serve/126/70323050.png" alt="Band cover"/>
+        </div>
+        <div class="frequency_graphs">
+            <canvas id="music_canvas"></canvas>
         </div>
     </div>
     <footer>
@@ -98,7 +117,7 @@
     </footer>
     <script>
         $(function(){
-            var songs = [];
+            songs = [];
             var date = '';
             var months = ['January','February','March','April','May','June','July','August',
                           'September','October','November','December'];
@@ -124,7 +143,7 @@
                 songs.push(s);
             }
             {% endfor %}
-            render_main_visualization(songs);
+            render_main_visualization();
             $('#{{username}}').addClass('selected');
         });
 
