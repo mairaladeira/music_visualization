@@ -44,8 +44,7 @@
         <ul class="months_axis"></ul>
         <ul class="years_axis"></ul>
         <div id="histogram_div">
-            <h3 id="histogram_title">Histogram Representation</h3>
-
+            <h3 class="histogram_title">Histogram Representation</h3>
             <ul class="buttons">
                 <li class="title">Evolution lines:</li>
                 <li class="button getLine" id="show_jazz_line" data-id="jazz_canvas">Jazz/Blues</li>
@@ -77,6 +76,37 @@
             <canvas id="reb_canvas"></canvas>
             <canvas id="others_canvas"></canvas>
         </div>
+        <div id="hours_analysis">
+            <h3 class="histogram_title">Hours Histogram Representation</h3>
+            <ul id="hours_frequency_axis"></ul>
+            <div id="hours_histogram"></div>
+            <ul id="hours_interval_axis">
+                <li>0</li>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+                <li>10</li>
+                <li>11</li>
+                <li>12</li>
+                <li>13</li>
+                <li>14</li>
+                <li>15</li>
+                <li>16</li>
+                <li>17</li>
+                <li>18</li>
+                <li>19</li>
+                <li>20</li>
+                <li>21</li>
+                <li>22</li>
+                <li>23</li>
+            </ul>
+        </div>
     </div>
     <div id="music_overflow">
         <div class="black_overflow"></div>
@@ -92,8 +122,10 @@
         <div class="music_icon">
             <img src="http://userserve-ak.last.fm/serve/126/70323050.png" alt="Band cover"/>
         </div>
-        <div class="frequency_graphs">
+        <div id="music_frequency_graph">
+            <ul id="music_frequency_axis"></ul>
             <canvas id="music_canvas"></canvas>
+            <ul id="music_days_axis"></ul>
         </div>
     </div>
     <footer>
@@ -112,7 +144,7 @@
             <li class="change_data" id="mehreenikram">Mehreen</li>
             <li class="change_data" id="ladeira_maira">Maíra</li>
             <li class="change_data" id="gabrielahrlr">Gabriela</li>
-            <li class="change_data" id="ernestollamas">Ernesto</li>
+            <!--<li class="change_data" id="ernestollamas">Ernesto</li>-->
         </ul>
     </footer>
     <script>

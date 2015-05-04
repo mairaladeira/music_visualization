@@ -77,7 +77,6 @@ class GetMusic:
         return key
 
     def format_song(self, song):
-        #print(song)
         if 'date' in song:
             song_date = song['date']['uts']
         else:
@@ -132,9 +131,9 @@ class GetMusic:
             self.songs[self.encode_dict_key(song['name'])]['played'].append(song['date']['uts'])
         #For Gabriela:
         #ADD mood code here with name = song['name'] and artist = song['artist']['#text']
-        if self.encode_dict_key(song['name']) not in self.moods:
-            moody = mood(song['artist']['#text'],song['name'])
-            self.moods[song['name']] = moody
+        #if self.encode_dict_key(song['name']) not in self.moods:
+            #moody = mood(song['artist']['#text'],song['name'])
+            #self.moods[song['name']] = moody
 
         self.csv_writer.writerow({'Name': song['name'].replace("'", "\'"),
                                   'Gender': self.songs[self.encode_dict_key(song['name'])]['gender'],
@@ -150,7 +149,7 @@ class GetMusic:
                   song['album']['#text'],
                   song_date,
                   song['image'][2]['#text'],
-                  self.moods[song['name']]
+                  #self.moods[song['name']]
                   #Add mood here as your_mood (no key)
                 ]
         self.time_songs.append(t_song)
@@ -339,14 +338,35 @@ class GetMusic:
                 f.close()
             except Exception as e:
                 print(e)
-
-# #ernestollamas, gabrielahrlr, ladeira_maira, mehreenikram
-# test = GetMusic('gabrielahrlr')
-# #test.get_cache_data()
-# #print(test.get_time_songs())
-# #print(test.get_songs())
-# #print(test.get_artists())
-# #print(test.get_albums())
-# test.get_music(1)
-# test.cache_data()
+if __name__ == "__main__":
+    # #ernestollamas, gabrielahrlr, ladeira_maira, mehreenikram
+    test = GetMusic('mehreenikram')
+    #test.get_cache_data()
+    #'
+    # unknown = 0
+    # angry = 0
+    # sad = 0
+    # calm = 0
+    # happy = 0
+    # for s in test.get_time_songs():
+    #     if s[6] == 'Unknown':
+    #         unknown += 1
+    #     elif s[6] == 'Angry':
+    #         angry += 1
+    #     elif s[6] == 'Sad':
+    #         sad += 1
+    #     elif s[6] == 'Calm':
+    #         calm += 1
+    #     elif s[6] == 'Happy':
+    #         happy += 1
+    # print('Unknown '+str(unknown))
+    # print('Angry '+str(angry))
+    # print('Sad '+str(sad))
+    # print('Calm '+str(calm))
+    # print('Happy '+str(happy))
+    # #print(test.get_songs())
+    # #print(test.get_artists())
+    # #print(test.get_albums())
+    test.get_music(1)
+    test.cache_data()
 

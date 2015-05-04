@@ -22,7 +22,7 @@ header span {
 #visualization {
     border: 1px solid #999;
     float: left;
-    margin-left: 20px;
+    margin-left: 40px;
     height: 503px;
     width: 100%;
     background-image: url('../img/loading.gif');
@@ -43,6 +43,7 @@ header span {
     width: 100%;
     float: left;
     background-color: white;
+    margin-bottom: 50px;
 }
 #hours_axis {
   float: left;
@@ -54,9 +55,23 @@ header span {
   top: 0px;
   background-color: white;
   left: -10px;
-  padding-left: 10px;
+  padding-left: 30px;
   width: 10px;
 }
+
+#hours_axis::before {
+  content: "Hours";
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  transform: rotate(270deg);
+  position: absolute;
+  top: 275px;
+  float: left;
+  left: 13px;
+  font-size: 11px;
+}
+
 #hours_axis li{
     height: 17px;
     text-align: right;
@@ -66,11 +81,11 @@ header span {
 .day {
     float: left;
 }
-#visualization > :nth-child(even), #histogram > :nth-child(even){
+#visualization > :nth-child(even), #histogram > :nth-child(even), #hours_histogram > :nth-child(even){
     border-left: 1px solid #fff;
 
 }
-#visualization > :nth-child(odd), #histogram > :nth-child(odd) {
+#visualization > :nth-child(odd), #histogram > :nth-child(odd), #hours_histogram > :nth-child(odd) {
     border-left: 1px solid #fff;
 
 }
@@ -176,7 +191,7 @@ footer {
     border-bottom: 1px solid #999 !important
 }
 
-.days_axis {
+.days_axis, #hours_interval_axis {
     clear: both;
     list-style: none;
     float: left;
@@ -184,12 +199,36 @@ footer {
     margin: 5px 0;
 }
 
-.days_axis li {
+#hours_interval_axis::after {
+    content: "Hours of the Day";
+    width: 100%;
+    height: 20px;
+    text-align: center;
+    position: relative;
+    float: left;
+    font-size: 11px;
+    margin-top: 10px;
+}
+
+.content > .days_axis {
+    padding: 0 0 0 40px;
+
+}
+
+.days_axis li, #hours_interval_axis li {
     float: left;
     font-size: 8px;
     width: 21px;
     text-align: center;
     opacity: 0;
+}
+
+#hours_interval_axis li {
+    width: 40px;
+}
+
+#hours_interval_axis li {
+    opacity: 1;
 }
 
 .days_axis li:nth-child(3n+1){
@@ -293,11 +332,11 @@ div.tooltip span.extra_info .info div {
     height: auto;
 }
 .bottom_hours div.tooltip span {
-    margin-top: -85px;
+    margin-top: -120px;
 }
 
 .bottom_hours .tooltip_arrow {
-    top: 74px;
+    top: 109px;
 }
 
 .top_hours div.tooltip span.extra_info {
@@ -308,12 +347,35 @@ div.tooltip span.extra_info .info div {
     top: 3px;
 }
 
+.right_box div.tooltip span.extra_info {
+    margin-left: -350px;
+}
+
+.right_box .tooltip_arrow {
+  transform: rotate(180deg);
+  left: 340px;
+}
+
 .months_axis, .years_axis {
     clear: both;
     list-style: none;
     float: left;
     padding: 0 0 0 20px;
     margin: 1px 0;
+}
+.content > .months_axis, .content > .years_axis {
+    padding: 0 0 0 40px;
+}
+
+.years_axis::after {
+    content: "Days";
+    width: 100%;
+    height: 20px;
+    text-align: center;
+    position: relative;
+    float: left;
+    font-size: 11px;
+    margin-top: 10px;
 }
 
 .months_axis li, .years_axis li {
@@ -330,13 +392,17 @@ div.tooltip span.extra_info .info div {
     background-color: #CCCCCC;
 }
 
-#histogram .square {
+.content #hours_analysis {
+    width: 980px;
+}
+
+#histogram .square, #hours_histogram .square {
     height: 20px;
     width: 100%;
     position: absolute;
     bottom: 0;
 }
-#histogram {
+#histogram, #hours_histogram {
     position: relative;
     left: 0;
     top: 0;
@@ -350,20 +416,36 @@ div.tooltip span.extra_info .info div {
     background-repeat: no-repeat;
     background-position: center;
 }
+#hours_histogram {
+    width: 960px;
+}
 
 #canvas_overflow.show_approximation {
     display: block;
 }
 
-#histogram .day {
+#histogram .day, #hours_histogram .hour {
     height: 100%;
 }
+#hours_histogram .hour {
+    width: 39px;
+    position: relative;
+    float: left;
+    background-color: #eeeeee;
+}
 
-#histogram_div {
+#hours_histogram .hour .square {
+    position: absolute;
+    left: 0;
+
+}
+
+#histogram_div, #hours_analysis {
     position: relative;
     width: 100%;
     float: left;
     margin-top: 100px;
+    margin-left: 20px;
 }
 
 canvas {
@@ -392,7 +474,7 @@ canvas.show {
     display: block;
 }
 
-#frequency {
+#frequency, #hours_frequency_axis {
     float: left;
     list-style: none;
     padding: 0;
@@ -401,22 +483,38 @@ canvas.show {
     position: absolute;
     top: 0;
     background-color: white;
-    left: -10px;
-    padding-left: 15px;
+    left: -20px;
+    padding-left: 25px;
     width: 10px;
     z-index: 10;
     padding-bottom: 2px;
 }
-#frequency li {
+
+#frequency::before, #hours_frequency_axis::before {
+  content: "Frequency";
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  transform: rotate(270deg);
+  position: absolute;
+  top: 240px;
+  float: left;
+  left: 5px;
+  font-size: 11px;
+}
+
+#frequency li, #hours_frequency_axis li {
     font-size: 8px;
     opacity: 0;
 }
 
-#frequency.unfrequent :nth-child(5n +1) {
+#frequency.unfrequent :nth-child(5n +1), #hours_frequency_axis.unfrequent :nth-child(5n +1) {
     opacity: 1;
 }
-
-#frequency.frequent :nth-child(10n +1) {
+#frequency.frequent :nth-child(10n +1), #hours_frequency_axis.frequent :nth-child(10n +1) {
+    opacity: 1;
+}
+#frequency :last-child, #hours_frequency_axis :last-child {
     opacity: 1;
 }
 .buttons {
@@ -447,7 +545,7 @@ canvas.show {
 }
 
 
-#histogram_title {
+.histogram_title  {
     position: absolute;
     top: -60px;
     left: 20px;
@@ -479,6 +577,9 @@ canvas.show {
 
 #music_overflow h3 {
     text-align: center;
+    margin-top: 0;
+    margin-bottom: 35px;
+    font-size: 30px;
 }
 
 #music_overflow div {
@@ -492,7 +593,7 @@ canvas.show {
 #music_overflow .close {
     position: absolute;
     right: 90px;
-    top: 50px;
+    top: 37px;
     padding: 10px;
     cursor: pointer;
     font-size: 30px;
@@ -506,6 +607,7 @@ canvas.show {
     margin-left: 40px;
 }
 
+
 #music_overflow .music_icon img.hide {
     display: none;
 }
@@ -517,7 +619,78 @@ canvas.show {
     height: 300px;
     top: 0;
     left: 0;
-    background-color: white;
-    margin-left: 50px;
     display: block;
+    margin-left: 0;
+    border-left: 1px solid #333333;
+}
+
+#music_overflow #music_frequency_axis {
+    position: relative;
+    float: left;
+    height: 300px;
+    width: 20px;
+    top: 0;
+    left: 0;
+    display: block;
+    border-bottom: 1px solid #333333;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#music_overflow #music_frequency_graph {
+    position: relative;
+    float: right;
+    height: 344px;
+    width: 422px;
+    background-color: white;
+    padding-right: 9px;
+}
+
+#music_overflow #music_days_axis {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 43px;
+    border-left: 1px solid #333333;
+    border-top: 1px solid #333333;
+    list-style: none;
+    padding: 0 10px 0 0;
+    margin: 0;
+}
+
+#music_overflow #music_days_axis li, #music_overflow #music_frequency_axis li {
+    padding: 0;
+    font-size: 8px;
+    color: #333333;
+    float: left;
+    margin: 0;
+}
+
+#music_overflow #music_days_axis li {
+    transform: rotate(90deg);
+    margin-top: 2px;
+    white-space: nowrap;
+    position: relative;
+    left: 12px;
+    opacity: 0;
+}
+
+
+#music_overflow #music_days_axis :nth-child(4n +1) {
+    opacity: 1;
+}
+
+#music_overflow #music_frequency_axis li {
+    clear: left;
+    position: relative;
+    width: 100%;
+    text-align: center;
+}
+
+#music_overflow #music_frequency_axis li span {
+    position: absolute;
+    bottom: 0;
+    line-height: 1;
 }

@@ -7,6 +7,8 @@ var histogram_square_height = 0;
 function render_main_visualization(){
     //this function expects the songs array to be sorted from the oldest to the newest.
     var date = songs[0].timestamp;
+    var n = date.getTimezoneOffset();
+    console.log(n);
     var last_day = songs[songs.length - 1].timestamp;
     var amount_days =  Math.ceil((last_day-date)/(1000*60*60*24));
     if (amount_days > 100) {
@@ -83,13 +85,96 @@ function render_main_visualization(){
     get_squares_size();
     get_histogram_size();
     bind_music_events();
+    get_hours_histogram();
+}
+
+function get_hours_histogram() {
+    var frequencies = [
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
+        {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0}
+    ];
+    $.each(songs, function(i, v){
+        frequencies[parseInt(v.hour)].total++;
+        frequencies[parseInt(v.hour)][v.gender]++;
+    });
+    var max = 0;
+    $.each(frequencies, function(i, v){
+        if (v.total > max) {
+            max = v.total;
+        }
+    });
+    var hours_frequency_axis_html = '';
+    var height = 500/max;
+    var class_n = 'frequent';
+    if(max < 200) {
+        class_n = 'unfrequent';
+    }
+    for(var i = max; i >= 0; i --) {
+        hours_frequency_axis_html += '<li style="height: '+height+'px;">'+i+'</li>'
+    }
+    var html = '';
+    $.each(frequencies, function(i,v){
+        var bottom = 0;
+        html += '<div class="hour">';
+        if(v.jazz_blues > 0)
+            html += '<div class="square jazz_blues" style="height: '+(height*v.jazz_blues)+'px; bottom:'+bottom+'px;"></div>';
+            bottom = bottom + height*v.jazz_blues;
+        if(v.pop > 0)
+            html += '<div class="square pop" style="height: '+(height*v.pop)+'px; bottom:'+bottom+'px;"></div>';
+            bottom = bottom + height*v.pop;
+        if(v.metal > 0)
+            html += '<div class="square metal" style="height: '+(height*v.metal)+'px; bottom:'+bottom+'px;"></div>';
+            bottom = bottom + height*v.metal;
+        if(v.rock > 0)
+            html += '<div class="square rock" style="height: '+(height*v.rock)+'px; bottom:'+bottom+'px;"></div>';
+            bottom = bottom + height*v.rock;
+        if(v['hip-hop_rap'] > 0)
+            html += '<div class="square hip-hop_rap" style="height: '+(height*v['hip-hop_rap'])+'px; bottom:'+bottom+'px;"></div>';
+            bottom = bottom + height*v['hip-hop_rap'];
+        if(v.dance_electronic > 0)
+            html += '<div class="square dance_electronic" style="height: '+(height*v.dance_electronic)+'px; bottom:'+bottom+'px;"></div>';
+            bottom = bottom + height*v.dance_electronic;
+        if(v.alternative_indie > 0)
+            html += '<div class="square alternative_indie" style="height: '+(height*v.alternative_indie)+'px; bottom:'+bottom+'px;"></div>';
+            bottom = bottom + height*v.alternative_indie;
+        if(v.reb_soul > 0)
+            html += '<div class="square reb_soul" style="height: '+(height*v.reb_soul)+'px; bottom:'+bottom+'px;"></div>';
+            bottom = bottom + height*v.reb_soul;
+        if(v.other > 0)
+            html += '<div class="square other" style="height: '+(height*v.other)+'px; bottom:'+bottom+'px;"></div>';
+        html += '</div>';
+    });
+    $('#hours_frequency_axis').addClass(class_n).append(hours_frequency_axis_html);
+    $('#hours_histogram').append(html);
 }
 
 function format_music_name_for_html(name) {
     var format_name = replaceAll(' ', '_', name);
     format_name = replaceAll('(', '_', format_name);
     format_name = replaceAll(')', '_', format_name);
-    format_name = replaceAll('\'', '_', format_name);
+    format_name = replaceAll("&#39;", '', format_name);
     format_name = replaceAll(',', '_', format_name);
     format_name = replaceAll('.', '_', format_name);
     return format_name;
@@ -315,6 +400,12 @@ function bind_music_events(){
         music_overflow.find('.album span').html(music.album);
         music_overflow.find('.frequency strong').html(music.frequency);
         music_overflow.find('.play_time strong').html(music.day+' '+music.month+' '+music.year+' '+music.time);
+        var music_frequency_axis = $('#music_frequency_axis');
+        music_frequency_axis.html('');
+        var music_days_axis = $('#music_days_axis');
+        music_days_axis.html('');
+        var days_html = '';
+        var frequency_html = '';
         if(music.icon != '') {
             music_overflow.find('.music_icon img').removeClass('hide').attr('src', music.icon);
         } else {
@@ -336,6 +427,7 @@ function bind_music_events(){
         };
         var days = $('#visualization').find('.day');
         var x_size = days.length;
+        var x_width = 400/x_size;
         var y_size = 0;
         days.each(function(){
             var amount = $(this).find('.square.tooltip[data-class="'+format_music_name_for_html(music.name)+'"]').length;
@@ -344,14 +436,20 @@ function bind_music_events(){
                 y_size = amount;
             }
             i++;
+            days_html += '<li style="width: '+x_width+'px; height: '+x_width+'px;">'+$(this).attr('id')+'</li>';
         });
-        console.log(y_size);
+        var y_height = 300/(y_size+1);
+        for(var j = y_size; j >= 0; j--) {
+            frequency_html += '<li style="height: '+y_height+'px;"><span>'+j+'</span></li>';
+        }
+        music_days_axis.append(days_html);
+        music_frequency_axis.append(frequency_html);
         get_music_canvas(dataPoints, colors[music.gender], x_size, y_size);
     });
 }
 
 function get_music_x_y(point, square_w, square_h) {
-    return {x: Math.floor((point.x*(square_w))), y: Math.floor(300-(point.y*square_h))-1};
+    return {x: Math.floor((point.x*(square_w+0.5))+(square_w/2)+1), y: Math.floor(300-(point.y*square_h))-1};
 }
 
 function get_music_canvas(dataPoints, color, x_size, y_size){
@@ -359,18 +457,19 @@ function get_music_canvas(dataPoints, color, x_size, y_size){
     canvas.width = 400;
     canvas.height = 300;
     var ctx = canvas.getContext('2d');
+    ctx.fillStyle = color;
     ctx.lineWidth = 2;
-    var square_w = Math.floor(400/x_size);
-    var square_h = Math.floor(300/y_size);
-    console.log(square_w);
-    console.log(square_h);
+    var square_w = Math.floor(400/(x_size));
+    var square_h = Math.floor(300/(y_size+1));
     var point = get_music_x_y(dataPoints[0], square_w, square_h);
     ctx.beginPath();
     ctx.moveTo(point.x, point.y);
     $.each(dataPoints, function(i, v){
         var point = get_music_x_y(v, square_w, square_h);
-        //console.log(point);
-        //ctx.fillRect(point.x,point.y, 5, 5);
+        //ctx.font="12px Georgia";
+        //ctx.fillText(v.x+'-'+v.y,point.x - 10,point.y+10);
+        ctx.fillRect(point.x-(square_w/2),point.y, 5, 5);
+        console.log(point.x+'-'+point.y);
         if (i == dataPoints.length -2) {
             var point2 = get_music_x_y(dataPoints[i+1], square_w, square_h);
             ctx.lineTo(point.x, point.y);
@@ -379,6 +478,20 @@ function get_music_canvas(dataPoints, color, x_size, y_size){
             point2 = get_music_x_y(dataPoints[i+1], square_w, square_h);
             var xc = (point.x + point2.x)/2;
             var yc = (point.y + point2.y)/2;
+            xc = (xc + point.x)/2;
+            yc = (yc + point.y)/2;
+            xc = (xc + point.x)/2;
+            yc = (yc + point.y)/2;
+            xc = (xc + point.x)/2;
+            yc = (yc + point.y)/2;
+            xc = (xc + point.x)/2;
+            yc = (yc + point.y)/2;
+            xc = (xc + point.x)/2;
+            yc = (yc + point.y)/2;
+            xc = (xc + point.x)/2;
+            yc = (yc + point.y)/2;
+            xc = (xc + point.x)/2;
+            yc = (yc + point.y)/2;
             ctx.bezierCurveTo(point.x, point.y,point.x, point.y, xc, yc);
         }
     });
@@ -388,10 +501,18 @@ function get_music_canvas(dataPoints, color, x_size, y_size){
 
 $(document).ready(function(){
     $(window).bind('scroll', function(){
-        $('#hours_axis').css('left', $(this).scrollLeft()-10);
-        $('#frequency').css('left', $(this).scrollLeft()-10);
-        $('.buttons').css('left', $(this).scrollLeft()+20);
-        $('#histogram_title').css('left', $(this).scrollLeft()+20);
+        var offset_left = $(this).scrollLeft();
+        $('#hours_axis').css('left', offset_left - 10);
+        $('#frequency').css('left', offset_left - 20);
+        $('.buttons').css('left', offset_left +20);
+        $('.histogram_title').css('left', offset_left +20);
+        $('.right_box').removeClass('right_box');
+        $('.hour').each(function(){
+            var left = $(this).offset().left;
+            if (left > offset_left+($(window).width()/2)) {
+                $(this).addClass('right_box');
+            }
+        });
     });
     $('#hide_continuous_approximations').bind('click', function(){
         var canvas_overflow = $('#canvas_overflow');
@@ -441,6 +562,8 @@ $(document).ready(function(){
         $('#alternative_canvas').html('');
         $('#reb_canvas').html('');
         $('#others_canvas').html('');
+        $('#hours_frequency_axis').html('');
+        $('#hours_histogram').html('');
         $('#datasource').html(id);
         $('.change_data').removeClass('selected');
         $('#'+id).addClass('selected');
