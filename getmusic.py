@@ -7,6 +7,9 @@ import urllib
 import re
 import csv
 from operator import itemgetter
+from mood import mood
+
+
 
 class GetMusic:
     def __init__(self, username):
@@ -30,6 +33,7 @@ class GetMusic:
         fieldnames = ['Name', 'Gender', 'Timestamp', 'Artist']
         self.csv_writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames,delimiter=',')
         self.csv_writer.writeheader()
+        self.moods = dict()
 
     def get_songs(self):
         return self.songs
@@ -128,10 +132,16 @@ class GetMusic:
             self.songs[self.encode_dict_key(song['name'])]['played'].append(song['date']['uts'])
         #For Gabriela:
         #ADD mood code here with name = song['name'] and artist = song['artist']['#text']
+        if self.encode_dict_key(song['name']) not in self.moods:
+            moody = mood(song['artist']['#text'],song['name'])
+            self.moods[song['name']] = moody
+
         self.csv_writer.writerow({'Name': song['name'].replace("'", "\'"),
                                   'Gender': self.songs[self.encode_dict_key(song['name'])]['gender'],
                                   'Timestamp': song_date,
                                   'Artist': song['artist']['#text']
+                                   #'Mood': self.moods[song['name']]
+
                                   #add mood here for csv as 'Mood': your_mood
                                 })
         t_song = [song['name'].replace("'", "\'"),
@@ -139,7 +149,8 @@ class GetMusic:
                   song['artist']['#text'],
                   song['album']['#text'],
                   song_date,
-                  song['image'][2]['#text']
+                  song['image'][2]['#text'],
+                  self.moods[song['name']]
                   #Add mood here as your_mood (no key)
                 ]
         self.time_songs.append(t_song)
@@ -329,13 +340,13 @@ class GetMusic:
             except Exception as e:
                 print(e)
 
-#ernestollamas, gabrielahrlr, ladeira_maira, mehreenikram
-#test = GetMusic('ernestollamas')
-#test.get_cache_data()
-#print(test.get_time_songs())
-#print(test.get_songs())
-#print(test.get_artists())
-#print(test.get_albums())
-#test.get_music(1)
-#test.cache_data()
+# #ernestollamas, gabrielahrlr, ladeira_maira, mehreenikram
+# test = GetMusic('gabrielahrlr')
+# #test.get_cache_data()
+# #print(test.get_time_songs())
+# #print(test.get_songs())
+# #print(test.get_artists())
+# #print(test.get_albums())
+# test.get_music(1)
+# test.cache_data()
 
