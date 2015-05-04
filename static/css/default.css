@@ -351,8 +351,8 @@ div.tooltip span.extra_info .info div {
     background-position: center;
 }
 
-#histogram.show_approximation {
-    opacity: 0.5;
+#canvas_overflow.show_approximation {
+    display: block;
 }
 
 #histogram .day {
@@ -372,6 +372,19 @@ canvas {
     margin-left: 20px;
     border: none;
     left: 0;
+    display: none;
+}
+
+#canvas_overflow {
+    position: absolute;
+    top: 0;
+    margin-left: 20px;
+    border: none;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.85;
     display: none;
 }
 
@@ -439,4 +452,72 @@ canvas.show {
     top: -60px;
     left: 20px;
     margin: 0;
+}
+
+#music_overflow {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-sizing: border-box;
+    padding: 50px 100px;
+    color: #ffffff;
+    display: none;
+}
+#music_overflow .black_overflow {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #000000;
+    opacity: 0.85;
+    z-index: -1;
+}
+
+#music_overflow h3 {
+    text-align: center;
+}
+
+#music_overflow div {
+    line-height: 30px;
+}
+
+#music_overflow .info {
+    float: left;
+    max-width: 400px;
+}
+#music_overflow .close {
+    position: absolute;
+    right: 90px;
+    top: 50px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 30px;
+}
+#music_overflow.show {
+    display: block;
+}
+
+#music_overflow .music_icon {
+    float: left;
+    margin-left: 40px;
+}
+
+#music_overflow .music_icon img.hide {
+    display: none;
+}
+
+#music_overflow #music_canvas {
+    position: relative;
+    float: left;
+    width: 400px !important;
+    height: 300px;
+    top: 0;
+    left: 0;
+    background-color: white;
+    margin-left: 50px;
+    display: block;
 }

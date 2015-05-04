@@ -4,7 +4,7 @@
 var square_size = 20;
 var height = 503;
 var histogram_square_height = 0;
-function render_main_visualization(songs){
+function render_main_visualization(){
     //this function expects the songs array to be sorted from the oldest to the newest.
     var date = songs[0].timestamp;
     var last_day = songs[songs.length - 1].timestamp;
@@ -17,6 +17,7 @@ function render_main_visualization(songs){
 
     visualization.width((square_size+1)*amount_days);
     histogram.width((square_size+1)*amount_days);
+    $('#canvas_overflow').width((square_size+1)*amount_days);
     //$('#histogram_canvas').width((square_size+1)*amount_days);
     $('body').width(((square_size+1)*amount_days)+40);
     var html = '';
@@ -63,7 +64,7 @@ function render_main_visualization(songs){
 
     $.each(songs, function(i,v){
         var song_date = v.timestamp.getDate()+'-'+v.timestamp.getMonth()+'-'+v.timestamp.getFullYear();
-        var element_data = '<div class="square '+ v.gender+' tooltip" data-class="'+ format_music_name_for_html(v.name)+'">' +
+        var element_data = '<div class="square '+ v.gender+' tooltip" data-class="'+ format_music_name_for_html(v.name)+'" data-id="'+i+'">' +
                                 '<span class="extra_info">' +
                                     '<div class="tooltip_arrow"></div>' +
                                     '<div class="info">' +
@@ -75,7 +76,7 @@ function render_main_visualization(songs){
                                     '</div>'+
                                 '</span>' +
                            '</div>';
-        var histogram_element_data = '<div class="square '+ v.gender+' tooltip" style="width:'+square_size+'px;"></div>';
+        var histogram_element_data = '<div class="square '+ v.gender+' tooltip" style="width:'+square_size+'px;" data-id="'+i+'"></div>';
         $('#'+ song_date +'-'+ v.hour).append(element_data);
         $('#'+ song_date +'_histogram').append(histogram_element_data);
     });
@@ -192,9 +193,9 @@ function get_histogram_size() {
 
 function get_canvas(dataPoints, canvas_id, color){
     var canvas = document.getElementById(canvas_id);
+    var ctx = canvas.getContext('2d');
     canvas.width = (square_size+1)*dataPoints.length;
     canvas.height = height;
-    var ctx = canvas.getContext('2d');
     ctx.lineWidth = 3;
     var point = get_histogram_x_y(dataPoints[0]);
     ctx.beginPath();
@@ -305,6 +306,84 @@ function bind_music_events(){
             $('.hour .square.tooltip').css('background-color', '');
         }
     });
+
+    $('.square').bind('click', function(){
+        var music_overflow = $('#music_overflow');
+        var music = songs[$(this).data('id')];
+        music_overflow.find('.name').html(music.name);
+        music_overflow.find('.artist span').html(music.artist);
+        music_overflow.find('.album span').html(music.album);
+        music_overflow.find('.frequency strong').html(music.frequency);
+        music_overflow.find('.play_time strong').html(music.day+' '+music.month+' '+music.year+' '+music.time);
+        if(music.icon != '') {
+            music_overflow.find('.music_icon img').removeClass('hide').attr('src', music.icon);
+        } else {
+            music_overflow.find('.music_icon img').addClass('hide');
+        }
+        music_overflow.addClass('show');
+        var dataPoints = [];
+        var i = 0;
+        var colors = {
+            jazz_blues:'#774306',
+            pop:'#FE0000',
+            metal:'#97253F',
+            rock:'#016AAB',
+            'hip-hop_rap':'#019F4C',
+            dance_electronic: '#FE7314',
+            alternative_indie: '#6869A9',
+            reb_soul: '#FBDE06',
+            other: '#F0C896'
+        };
+        var days = $('#visualization').find('.day');
+        var x_size = days.length;
+        var y_size = 0;
+        days.each(function(){
+            var amount = $(this).find('.square.tooltip[data-class="'+format_music_name_for_html(music.name)+'"]').length;
+            dataPoints.push({x: i, y:amount});
+            if (amount > y_size) {
+                y_size = amount;
+            }
+            i++;
+        });
+        console.log(y_size);
+        get_music_canvas(dataPoints, colors[music.gender], x_size, y_size);
+    });
+}
+
+function get_music_x_y(point, square_w, square_h) {
+    return {x: Math.floor((point.x*(square_w))), y: Math.floor(300-(point.y*square_h))-1};
+}
+
+function get_music_canvas(dataPoints, color, x_size, y_size){
+    var canvas = document.getElementById('music_canvas');
+    canvas.width = 400;
+    canvas.height = 300;
+    var ctx = canvas.getContext('2d');
+    ctx.lineWidth = 2;
+    var square_w = Math.floor(400/x_size);
+    var square_h = Math.floor(300/y_size);
+    console.log(square_w);
+    console.log(square_h);
+    var point = get_music_x_y(dataPoints[0], square_w, square_h);
+    ctx.beginPath();
+    ctx.moveTo(point.x, point.y);
+    $.each(dataPoints, function(i, v){
+        var point = get_music_x_y(v, square_w, square_h);
+        //console.log(point);
+        //ctx.fillRect(point.x,point.y, 5, 5);
+        if (i == dataPoints.length -2) {
+            var point2 = get_music_x_y(dataPoints[i+1], square_w, square_h);
+            ctx.lineTo(point.x, point.y);
+            ctx.lineTo(point2.x, point2.y);
+        } else if (i != dataPoints.length -1) {
+            point2 = get_music_x_y(dataPoints[i+1], square_w, square_h);
+            var xc = (point.x + point2.x)/2;
+            var yc = (point.y + point2.y)/2;
+            ctx.bezierCurveTo(point.x, point.y,point.x, point.y, xc, yc);
+        }
+    });
+    ctx.strokeStyle = color;
+    ctx.stroke();
 }
 
 $(document).ready(function(){
@@ -315,26 +394,30 @@ $(document).ready(function(){
         $('#histogram_title').css('left', $(this).scrollLeft()+20);
     });
     $('#hide_continuous_approximations').bind('click', function(){
-        var histogram = $('#histogram');
-        histogram.removeClass('show_approximation');
+        var canvas_overflow = $('#canvas_overflow');
+        canvas_overflow.removeClass('show_approximation');
         $('canvas.show').removeClass('show');
         $('.button.getLine').removeClass('selected');
     });
     $('.button.getLine').bind('click', function(){
         var canvas = $(this).attr("data-id");
         var canvas_div = $('#'+canvas);
-        var histogram = $('#histogram');
+        var canvas_overflow = $('#canvas_overflow');
         if (canvas_div.hasClass('show')) {
             canvas_div.removeClass('show');
             $(this).removeClass('selected');
             if($('canvas.show').length == 0)
-                histogram.removeClass('show_approximation');
+                canvas_overflow.removeClass('show_approximation');
         }
         else {
             canvas_div.addClass('show');
             $(this).addClass('selected');
-            histogram.addClass('show_approximation');
+            canvas_overflow.addClass('show_approximation');
         }
+    });
+
+    $('.close').bind('click', function(){
+        $('#music_overflow').removeClass('show');
     });
 
     $('.change_data').bind('click', function(){
@@ -361,9 +444,10 @@ $(document).ready(function(){
         $('#datasource').html(id);
         $('.change_data').removeClass('selected');
         $('#'+id).addClass('selected');
+        songs = [];
+
         $.post('getData', {username:id}).done(function(data){
             data = JSON.parse(data);
-            var songs = [];
             var months = ['January','February','March','April','May','June','July','August',
                           'September','October','November','December'];
             $.each(data, function(i,v){
@@ -390,5 +474,5 @@ $(document).ready(function(){
             });
             render_main_visualization(songs);
         });
-    })
+    });
 });
