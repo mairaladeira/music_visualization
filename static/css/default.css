@@ -45,6 +45,17 @@ header span {
     background-color: white;
     margin-bottom: 50px;
 }
+.content.extra {
+    padding: 25px;
+    background-color: #333333;
+    margin-left: 0;
+    color: #ffffff;
+    box-sizing: border-box;
+    width: 101%;
+    left: 0;
+    z-index: 0;
+}
+
 #hours_axis {
   float: left;
   list-style: none;
@@ -119,6 +130,30 @@ footer {
 .square span {
     display: none;
 }
+
+.square:hover::after {
+    content: attr(data-title);
+    padding: 5px;
+    color: #333;
+    position: relative;
+    left: 30px;
+    top: 100%;
+    z-index: 20;
+    white-space: nowrap;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0px 0px 4px #222;
+    -webkit-box-shadow: 0px 0px 4px #222;
+    box-shadow: 0px 0px 4px #222;
+    background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #eeeeee),color-stop(1, #cccccc));
+    background-image: -webkit-linear-gradient(top, #eeeeee, #cccccc);
+    background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);
+    background-image: -ms-linear-gradient(top, #eeeeee, #cccccc);
+    background-image: -o-linear-gradient(top, #eeeeee, #cccccc);
+}
+
 .square.unfocus {
     opacity: 0.5 !important;
 }
@@ -693,4 +728,29 @@ canvas.show {
     position: absolute;
     bottom: 0;
     line-height: 1;
+}
+
+#extra_pages {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 85px;
+    float: left;
+    width: 121px;
+}
+
+.about #extra_pages, .people #extra_pages {
+    margin-left: 10px;
+}
+
+#extra_pages li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    float: left;
+    padding: 5px 10px;
+    margin-top: 2px;
+}
+
+#extra_pages li a:hover {
+    color: #016AAB;
 }

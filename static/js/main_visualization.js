@@ -126,7 +126,7 @@ function get_hours_histogram() {
         }
     });
     var hours_frequency_axis_html = '';
-    var height = 500/max;
+    var height = Math.floor(505/max);
     var class_n = 'frequent';
     if(max < 200) {
         class_n = 'unfrequent';
@@ -139,31 +139,31 @@ function get_hours_histogram() {
         var bottom = 0;
         html += '<div class="hour">';
         if(v.jazz_blues > 0)
-            html += '<div class="square jazz_blues" style="height: '+(height*v.jazz_blues)+'px; bottom:'+bottom+'px;"></div>';
+            html += '<div class="square jazz_blues" data-title="'+ parseFloat((v.jazz_blues/ v.total)*100).toFixed(2)+'%" style="height: '+(height*v.jazz_blues)+'px; bottom:'+bottom+'px;"></div>';
             bottom = bottom + height*v.jazz_blues;
         if(v.pop > 0)
-            html += '<div class="square pop" style="height: '+(height*v.pop)+'px; bottom:'+bottom+'px;"></div>';
+            html += '<div class="square pop" data-title="'+ parseFloat((v.pop/ v.total)*100).toFixed(2)+'%" style="height: '+(height*v.pop)+'px; bottom:'+bottom+'px;"></div>';
             bottom = bottom + height*v.pop;
         if(v.metal > 0)
-            html += '<div class="square metal" style="height: '+(height*v.metal)+'px; bottom:'+bottom+'px;"></div>';
+            html += '<div class="square metal" data-title="'+ parseFloat((v.metal/ v.total)*100).toFixed(2)+'%" style="height: '+(height*v.metal)+'px; bottom:'+bottom+'px;"></div>';
             bottom = bottom + height*v.metal;
         if(v.rock > 0)
-            html += '<div class="square rock" style="height: '+(height*v.rock)+'px; bottom:'+bottom+'px;"></div>';
+            html += '<div class="square rock" data-title="'+ parseFloat((v.rock/ v.total)*100).toFixed(2)+'%" style="height: '+(height*v.rock)+'px; bottom:'+bottom+'px;"></div>';
             bottom = bottom + height*v.rock;
         if(v['hip-hop_rap'] > 0)
-            html += '<div class="square hip-hop_rap" style="height: '+(height*v['hip-hop_rap'])+'px; bottom:'+bottom+'px;"></div>';
+            html += '<div class="square hip-hop_rap" data-title="'+ parseFloat((v['hip-hop_rap']/ v.total)*100).toFixed(2)+'%" style="height: '+(height*v['hip-hop_rap'])+'px; bottom:'+bottom+'px;"></div>';
             bottom = bottom + height*v['hip-hop_rap'];
         if(v.dance_electronic > 0)
-            html += '<div class="square dance_electronic" style="height: '+(height*v.dance_electronic)+'px; bottom:'+bottom+'px;"></div>';
+            html += '<div class="square dance_electronic" data-title="'+ parseFloat((v.dance_electronic/ v.total)*100).toFixed(2)+'%" style="height: '+(height*v.dance_electronic)+'px; bottom:'+bottom+'px;"></div>';
             bottom = bottom + height*v.dance_electronic;
         if(v.alternative_indie > 0)
-            html += '<div class="square alternative_indie" style="height: '+(height*v.alternative_indie)+'px; bottom:'+bottom+'px;"></div>';
+            html += '<div class="square alternative_indie" data-title="'+ parseFloat((v.alternative_indie/ v.total)*100).toFixed(2)+'%" style="height: '+(height*v.alternative_indie)+'px; bottom:'+bottom+'px;"></div>';
             bottom = bottom + height*v.alternative_indie;
         if(v.reb_soul > 0)
-            html += '<div class="square reb_soul" style="height: '+(height*v.reb_soul)+'px; bottom:'+bottom+'px;"></div>';
+            html += '<div class="square reb_soul" data-title="'+ parseFloat((v.reb_soul/ v.total)*100).toFixed(2)+'%" style="height: '+(height*v.reb_soul)+'px; bottom:'+bottom+'px;"></div>';
             bottom = bottom + height*v.reb_soul;
         if(v.other > 0)
-            html += '<div class="square other" style="height: '+(height*v.other)+'px; bottom:'+bottom+'px;"></div>';
+            html += '<div class="square other" data-title="'+ parseFloat((v.other/ v.total)*100).toFixed(2)+'%" style="height: '+(height*v.other)+'px; bottom:'+bottom+'px;"></div>';
         html += '</div>';
     });
     $('#hours_frequency_axis').addClass(class_n).append(hours_frequency_axis_html);

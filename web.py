@@ -73,6 +73,10 @@ def click(button):
     """
     print(button)
     try:
+        if button == 'about':
+            return render_template('about.html')
+        if button == 'people':
+            return render_template('people.html')
         return "test"
     except Exception as e:
         print(e)
