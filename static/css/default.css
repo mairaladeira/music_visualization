@@ -754,3 +754,88 @@ canvas.show {
 #extra_pages li a:hover {
     color: #016AAB;
 }
+
+#slider1_container {
+    height: 400px !important;
+    width: 900px !important;
+    display: block;
+    margin: auto;
+}
+
+.people_list {
+    list-style: none;
+    margin-bottom: 50px;
+    float: left;
+    clear: both;
+}
+.person a {
+    color: #ffffff;
+    padding: 5px;
+    float: left;
+}
+.person a:hover {
+    color: #016AAB;
+}
+.person .name {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+.person {
+    float: left;
+    clear: both;
+    margin: 10px 0;
+}
+.person .img {
+    float: left;
+    width: 300px;
+    height: 300px;
+    background-size: 100% auto;
+
+}
+.person .text {
+    margin-bottom: 20px;
+}
+.person .info {
+    float: left;
+    padding: 5px;
+    margin-left: 30px;
+    max-width: 500px;
+}
+
+#gabriela .img {
+    background-image: url(../img/gabriela.jpg);
+}
+
+#maira .img {
+    background-image: url(../img/maira.jpg);
+}
+
+#mehreen .img {
+    background-image: url(../img/mehreen.jpg);
+}
+.people_list.extra .person {
+    clear: none;
+    margin-right: 20px;
+}
+.people_list.extra .person .img {
+    width: 200px;
+    height: 200px;
+}
+
+.people_list.extra .person .info {
+    float: left;
+    clear: both;
+    margin-left: 0;
+    width: 200px;
+    padding: 5px 0;
+}
+.people_list {
+    clear: both;
+}
+#julian .img {
+    background-image: url(../img/special.jpg);
+}
+#smila .img {
+    background-image: url(../img/special2.jpg);
+}

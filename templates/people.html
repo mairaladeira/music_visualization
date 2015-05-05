@@ -2,23 +2,108 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>DMKM Visualization project</title>
+    <title>DMKM Visualization projec - Peoplet</title>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/default.css') }}">
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.canvasjs.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main_visualization.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jssor.slider.mini.js') }}"></script>
 
 </head>
 <body class="people">
-    <header>EM-DMKM Visualization Project</header>
-    <div class="content">
+    <header>EM-DMKM Visualization Project - People</header>
+    <div class="content extra">
+        <div id="slider1_container" style="position: relative; top: 0px; left: 0px; width: 900px height: 400px;">
+            <!-- Slides Container -->
+            <div u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 900px; height: 400px">
+                <div><img u="image" src="{{ url_for('static', filename='img/group.jpg') }}" /></div>
+                <div><img u="image" src="{{ url_for('static', filename='img/photo3.jpg') }}" /></div>
+                <div><img u="image" src="{{ url_for('static', filename='img/photo4.png') }}" /></div>
+                <div><img u="image" src="{{ url_for('static', filename='img/photo5.jpg') }}" /></div>
+            </div>
+        </div>
+        <h3>The group:</h3>
+        <ul class="people_list">
+            <li class="person" id="gabriela">
+                <div class="img"></div>
+                <div class="info">
+                    <div class="name">Gabriela Hernandez Larios</div>
+                    <div class="text">
+                        The mexican part of our group, Gabriela is the responsible for most of the
+                        research and pretty much all the crazy ideas.
+                        Gabriela was also the brain behind our R code to make sure our visualizations are better than the
+                        classical ones.
+                    </div>
+                    <div>
+                        Contact:
+                        <div><a class="linkedIn" href="https://www.linkedin.com/profile/view?id=230756977">LinkedIn</a></div>
+                        <div><a class="email" href="mailto:gabrielahrlr@gmail.com">Email</a></div>
+                    </div>
+                </div>
+            </li>
+            <li class="person" id="maira">
+                <div class="img"></div>
+                <div class="info">
+                    <div class="name">Maira Machado Ladeira</div>
+                    <div class="text">
+                        The Brazilian part of the group, Maira is the responsible for the coding part.
+                        Everything that moves, shines or appears is thanks to her.
+                        She was also participating on the never ending brainstorm that gave origin to our visualization.
+                    </div>
+                    <div>
+                        Contact:
+                        <div><a class="linkedIn" href="https://www.linkedin.com/profile/view?id=59021281">LinkedIn</a></div>
+                        <div><a class="email" href="mailto:mairamachadoladeira@gmail.com">Email</a></div>
+                    </div>
+                </div>
+            </li>
+            <li class="person" id="mehreen">
+                <div class="img"></div>
+                <div class="info">
+                    <div class="name">Mehreen Ikram</div>
+                    <div class="text">
+                        Mehreen comes from Pakistan and, together with Gabriela, was responsible for the state of the art of the project.
+                        She was the one putting our report together and guarantying that everything looks right. All the latex code that
+                        makes our report awesome was done by our favorite pakistani
+                    </div>
+                    <div>
+                        Contact:
+                        <div><a class="linkedIn" href="https://www.linkedin.com/profile/view?id=98067923">LinkedIn</a></div>
+                        <div><a class="email" href="mailto:mehreen_ikram@ymail.com">Email</a></div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <h3 style="clear: both;">Special Participation:</h3>
+        <ul class="people_list extra">
+            <li class="person" id="julian">
+                <div class="img"></div>
+                <div class="info">
+                    Thanks for the tips and evaluation of the visualization
+                </div>
+            </li>
+            <li class="person" id="smila">
+                <div class="img"></div>
+                <div class="info">
+                    Thanks for the funny moments during the hard work :)
+                </div>
+            </li>
+        </ul>
+        <h3 style="clear: both;">An offer of: EM-DMKM Master</h3>
+        <img src="{{ url_for('static', filename='img/photo2.jpg') }}" width="800">
     </div>
     <footer>
-
         <ul id="extra_pages">
-            <li><a href="about">About</a></li>
             <li><a href="/">Back</a></li>
+            <li><a href="about">About</a></li>
         </ul>
     </footer>
+
+    <script>
+        jQuery(document).ready(function ($) {
+            $('#slider1_container').width($(window).width());
+            $('#slider1_container').find('.slides').width($(window).width());
+            var options = { $AutoPlay: true };
+            var jssor_slider1 = new $JssorSlider$('slider1_container', options);
+        });
+    </script>
 </body>
 </html>
