@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>DMKM Visualization project</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/default.css') }}">
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main_visualization.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/wordcloud2.js') }}"></script>
+
+</head>
+<body>
+    <header>EM-DMKM Visualization Project - Comparison of data</header>
+    <div class="content">
+        <div class="favorite_artists">
+            <h3>Favorite Artists</h3>
+            <div class="word_cloud">
+                <h5>Gabriela</h5>
+                <canvas id="gabriela"></canvas>
+            </div>
+            <div class="word_cloud">
+                <h5>Maira</h5>
+                <canvas id="maira"></canvas>
+            </div>
+            <div class="word_cloud">
+                <h5>Mehreen</h5>
+                <canvas id="mehreen"></canvas>
+            </div>
+        </div>
+        <div id="hours_analysis">
+            <h3 class="histogram_title">Hours Histogram Representation</h3>
+            <ul id="hours_frequency_axis"></ul>
+            <div id="hours_histogram"></div>
+            <ul id="hours_interval_axis">
+                <li>0</li>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+                <li>10</li>
+                <li>11</li>
+                <li>12</li>
+                <li>13</li>
+                <li>14</li>
+                <li>15</li>
+                <li>16</li>
+                <li>17</li>
+                <li>18</li>
+                <li>19</li>
+                <li>20</li>
+                <li>21</li>
+                <li>22</li>
+                <li>23</li>
+            </ul>
+        </div>
+    </div>
+    <footer>
+        <ul id="genders_subtitle">
+            <li><span class="jazz_blues"></span>Jazz/blues</li>
+            <li><span class="pop"></span>Pop</li>
+            <li><span class="metal"></span>Metal</li>
+            <li><span class="rock"></span>Rock</li>
+            <li><span class="hip-hop_rap"></span>Hip-hop/Rap</li>
+            <li><span class="dance_electronic"></span>Dance/Electronic</li>
+            <li><span class="alternative_indie"></span>Alternative/Indie</li>
+            <li><span class="reb_soul"></span>R&B/Soul</li>
+            <li><span class="other"></span>Other</li>
+        </ul>
+        <ul id="data-source">
+            <li class="change_data" id="mehreenikram">Mehreen</li>
+            <li class="change_data" id="ladeira_maira">Maíra</li>
+            <li class="change_data" id="gabrielahrlr">Gabriela</li>
+            <!--<li class="change_data" id="ernestollamas">Ernesto</li>-->
+        </ul>
+        <ul id="extra_pages">
+            <li><a href="about">About</a></li>
+            <li><a href="people">People</a></li>
+            <li><a href="comparison">Comparison</a></li>
+        </ul>
+    </footer>
+    <script>
+        var gabriela_songs = {{gabriela_songs|safe}};
+        var maira_songs = {{maira_songs|safe}};
+        var mehreen_songs = {{mehreen_songs|safe}};
+        var gabriela_artists = {{gabriela_artists|safe}};
+        var maira_artists = {{maira_artists|safe}};
+        var mehreen_artists = {{mehreen_artists|safe}};
+        var artists_genres = {{artists_genres|safe}};
+        var colors = {
+            'jazz_blues': '#774306',
+            'pop':'#FE0000',
+            'metal':'#97253F',
+            'rock':'#016AAB',
+            'hip-hop_rap':'#019F4C',
+            'dance_electronic':'#FE7314',
+            'alternative_indie': '#6869A9',
+            'reb_soul':'#FBDE06',
+            'other':'#F0C896'};
+
+        var minsize = '8px';
+        var gabriela_average = 0;
+        $.each(gabriela_artists, function(i,v){
+            gabriela_average = gabriela_average + v[1];
+        });
+        gabriela_average = gabriela_average/gabriela_artists.length;
+        var maira_average = 0;
+        $.each(maira_artists, function(i,v){
+            maira_average = maira_average + v[1];
+        });
+        maira_average = maira_average/maira_artists.length;
+        var mehreen_average = 0;
+        $.each(mehreen_artists, function(i,v){
+            mehreen_average = mehreen_average + v[1];
+        });
+        mehreen_average = mehreen_average/mehreen_artists.length;
+        WordCloud(document.getElementById('gabriela'), {
+            list: gabriela_artists,
+            shuffle: false,
+            hover: function(){},
+            minSize: minsize,
+            weightFactor: function (size) {
+                return Math.max(1.5*(size/gabriela_average), 10);
+            },
+            backgroundColor: '#333333',
+            color: function(word){
+                return colors[artists_genres[word]];
+            }
+        });
+        WordCloud(document.getElementById('maira'), {
+            list: maira_artists,
+            shuffle: false,
+            hover: function(){},
+            minSize: minsize,
+            weightFactor: function (size) {
+                return Math.max(2.5*(size/maira_average), 10);
+            },
+            backgroundColor: '#333333',
+            color: function(word){
+                return colors[artists_genres[word]];
+            }
+        });
+        WordCloud(document.getElementById('mehreen'), {
+            list: mehreen_artists,
+            shuffle: false,
+            hover: function(){},
+            minSize: minsize,
+            weightFactor: function (size) {
+                return Math.max(2.5*(size/mehreen_average), 10);
+            },
+            backgroundColor: '#333333',
+            color: function(word){
+                return colors[artists_genres[word]];
+            }
+        });
+    </script>
+
+</body>
+</html>

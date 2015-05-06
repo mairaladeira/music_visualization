@@ -131,7 +131,7 @@ footer {
     display: none;
 }
 
-.square:hover::after {
+#hours_analysis .square:hover::after {
     content: attr(data-title);
     padding: 5px;
     color: #333;
@@ -526,16 +526,17 @@ canvas.show {
 }
 
 #frequency::before, #hours_frequency_axis::before {
-  content: "Frequency";
-  width: 10px;
-  height: 10px;
-  display: inline-block;
-  transform: rotate(270deg);
-  position: absolute;
-  top: 240px;
-  float: left;
-  left: 5px;
-  font-size: 11px;
+    content: "Amount of songs";
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    transform: rotate(270deg);
+    position: absolute;
+    top: 280px;
+    float: left;
+    left: 5px;
+    font-size: 11px;
+    white-space: nowrap;
 }
 
 #frequency li, #hours_frequency_axis li {
@@ -733,9 +734,9 @@ canvas.show {
 #extra_pages {
     list-style: none;
     padding: 0;
-    margin: 0 0 0 85px;
+    margin: 0 0 0 35px;
     float: left;
-    width: 121px;
+    width: 216px;
 }
 
 .about #extra_pages, .people #extra_pages {
@@ -838,4 +839,32 @@ canvas.show {
 }
 #smila .img {
     background-image: url(../img/special2.jpg);
+}
+
+.word_cloud {
+  position: relative;
+  float: left;
+  width: 32%;
+  border: 1px solid #333;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-right: 1.7%;
+}
+.word_cloud:last-of-type {
+    margin-right: 0;
+}
+.word_cloud h5 {
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0;
+    background-color: #eeeeee;
+    padding: 10px 0;
+}
+.word_cloud canvas {
+    display: block;
+    width: 100%;
+    height: 300px;
+    position: relative;
+    margin: 0;
+    float: left;
 }

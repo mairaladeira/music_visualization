@@ -15,12 +15,9 @@ class GetMusic:
     def __init__(self, username):
         api_key = "173f5a8f7ca577012bf10a5fd4ad4da3"
         #api_secret = "8049b8fe9bb82a39f95faee07a7a6692"
-        rovicorp_api_key = "p2yqkycmyumrg84jy65pypxx"
-        self.rovicorp_url = 'http://api.rovicorp.com/data/v1.1/song/info?apikey='+rovicorp_api_key
         self.limit = 200
         self.username = username
         self.lastfm_url = "http://ws.audioscrobbler.com/2.0/?api_key="+api_key+"&user="+username+"&format=json"
-        self.url = "https://raw.githubusercontent.com/mairaladeira/music_visualization/master/page1.json?token=ADTzwkgxBao5o9hKcWp2tjr_GJGsUKqnks5VS_jtwA%3D%3D"
         self.songs = dict()
         self.artists = dict()
         self.albums = dict()
@@ -29,11 +26,12 @@ class GetMusic:
         self.start_time = time.time()
         self.csv = []
         self.genders_list = set()
-        self.csvfile = open('data.csv', 'w')
+        self.csvfile = open('data/data.csv', 'w')
         fieldnames = ['Name', 'Gender', 'Timestamp', 'Artist']
         self.csv_writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames,delimiter=',')
         self.csv_writer.writeheader()
         self.moods = dict()
+        self.artists_genre = dict()
 
     def get_songs(self):
         return self.songs
@@ -49,6 +47,9 @@ class GetMusic:
 
     def get_time_songs(self):
         return self.time_songs
+
+    def get_artists_genre(self):
+        return self.artists_genre
 
     def get_music(self, page):
         url = self.lastfm_url+"&method=user.getrecenttracks&limit="+str(self.limit)+"&page="+str(page)
@@ -83,7 +84,7 @@ class GetMusic:
             song_date = '0'
         if self.encode_dict_key(song['name']) not in self.songs:
             url = self.lastfm_url+"&method=track.gettoptags&artist="+urllib.parse.quote_plus(song['artist']['#text'])+\
-                  "&track="+urllib.parse.quote_plus(song['name'])+"&limit=2&autocorrect=1"
+                                  "&track="+urllib.parse.quote_plus(song['name'])+"&limit=2&autocorrect=1"
             r = requests.get(url)
             json_obj = r.json()
             #print(json_obj)
@@ -112,10 +113,7 @@ class GetMusic:
                                 continue
             song_obj = {
                 'name': song['name'].replace("'", "\'"),
-                'artist': song['artist']['#text'],
-                'album': song['album']['#text'],
-                'played': [song_date],
-                'icon': song['image'][2]['#text'],
+                'played': 1,
                 'gender': gender_obj
             }
             if gender_obj not in self.genders:
@@ -128,58 +126,27 @@ class GetMusic:
                     self.genders[gender_obj]['musics'].append(song['name'].replace("'", "\'"))
             self.songs[self.encode_dict_key(song['name'])] = song_obj
         elif 'date' in song:
-            self.songs[self.encode_dict_key(song['name'])]['played'].append(song['date']['uts'])
-        #For Gabriela:
-        #ADD mood code here with name = song['name'] and artist = song['artist']['#text']
-        #if self.encode_dict_key(song['name']) not in self.moods:
-            #moody = mood(song['artist']['#text'],song['name'])
-            #self.moods[song['name']] = moody
-
+            self.songs[self.encode_dict_key(song['name'])]['played'] += 1
         self.csv_writer.writerow({'Name': song['name'].replace("'", "\'"),
                                   'Gender': self.songs[self.encode_dict_key(song['name'])]['gender'],
                                   'Timestamp': song_date,
-                                  'Artist': song['artist']['#text']
-                                   #'Mood': self.moods[song['name']]
-
-                                  #add mood here for csv as 'Mood': your_mood
-                                })
+                                  'Artist': song['artist']['#text']})
         t_song = [song['name'].replace("'", "\'"),
                   self.songs[self.encode_dict_key(song['name'])]['gender'],
                   song['artist']['#text'],
                   song['album']['#text'],
                   song_date,
-                  song['image'][2]['#text'],
-                  #self.moods[song['name']]
-                  #Add mood here as your_mood (no key)
-                ]
+                  song['image'][2]['#text']]
         self.time_songs.append(t_song)
         if self.encode_dict_key(song['artist']['#text']) not in self.artists:
-            artist_obj = {
-                'artist': song['artist']['#text'],
-                'albums': [],
-                'musics': [],
-                'played': []
-            }
-            self.artists[self.encode_dict_key(song['artist']['#text'])] = artist_obj
-        if song['album']['#text'] not in self.artists[self.encode_dict_key(song['artist']['#text'])]['albums']:
-            self.artists[self.encode_dict_key(song['artist']['#text'])]['albums'].append(song['album']['#text'])
-        if song['name'].replace("'", "\'") not in self.artists[self.encode_dict_key(song['artist']['#text'])]['musics']:
-            self.artists[self.encode_dict_key(song['artist']['#text'])]['musics'].append(song['name'].replace("'", "\'"))
-        elif 'date' in song:
-            self.artists[self.encode_dict_key(song['artist']['#text'])]['played'].append(song['date']['uts'])
-
+            self.artists[self.encode_dict_key(song['artist']['#text'])] = 1
+            self.artists_genre[self.encode_dict_key(song['artist']['#text'])] = self.songs[self.encode_dict_key(song['name'])]['gender']
+        else:
+            self.artists[self.encode_dict_key(song['artist']['#text'])] += 1
         if self.encode_dict_key(song['album']['#text']) not in self.albums:
-            album_obj = {
-                'album': song['album']['#text'],
-                'artists': song['artist']['#text'],
-                'musics': [],
-                'played': []
-            }
-            self.albums[self.encode_dict_key(song['album']['#text'])] = album_obj
-        if song['name'].replace("'", "\'") not in self.albums[self.encode_dict_key(song['album']['#text'])]['musics']:
-            self.albums[self.encode_dict_key(song['album']['#text'])]['musics'].append(song['name'].replace("'", "\'"))
-        elif 'date' in song:
-            self.albums[self.encode_dict_key(song['album']['#text'])]['played'].append(song['date']['uts'])
+            self.albums[self.encode_dict_key(song['album']['#text'])] = 1
+        else:
+            self.albums[self.encode_dict_key(song['album']['#text'])] += 1
 
     def parser_gender(self, tag):
         """
@@ -266,107 +233,105 @@ class GetMusic:
     def cache_data(self):
         i = 0
         for ts in self.time_songs:
-            self.time_songs[i].append(len(self.songs[self.encode_dict_key(ts[0])]['played']))
+            self.time_songs[i].append(self.songs[self.encode_dict_key(ts[0])]['played'])
             i += 1
         self.csvfile.close()
         self.time_songs = sorted(self.time_songs, key=itemgetter(4))
+        artists = []
 
-        if not os.path.isfile(self.username+'_songs.pickle'):
-            f = open(self.username+'_songs.pickle', 'ab+')
+        for a in self.artists:
+            artists.append([a, self.artists[a]])
+        self.artists = sorted(artists, key=itemgetter(1), reverse=True)
+
+        #print(self.artists)
+        if not os.path.isfile('data/'+self.username+'_songs.pickle'):
+            f = open('data/'+self.username+'_songs.pickle', 'ab+')
             f.close()
-        with open(self.username+'_songs.pickle', 'wb+') as f:
+        with open('data/'+self.username+'_songs.pickle', 'wb+') as f:
             pickle.dump(self.songs, f, pickle.HIGHEST_PROTOCOL)
             f.close()
 
-        if not os.path.isfile(self.username+'_timesongs.pickle'):
-            f = open(self.username+'_timesongs.pickle', 'ab+')
+        if not os.path.isfile('data/'+self.username+'_timesongs.pickle'):
+            f = open('data/'+self.username+'_timesongs.pickle', 'ab+')
             f.close()
-        with open(self.username+'_timesongs.pickle', 'wb+') as f:
+        with open('data/'+self.username+'_timesongs.pickle', 'wb+') as f:
             pickle.dump(self.time_songs, f, pickle.HIGHEST_PROTOCOL)
             f.close()
 
-        if not os.path.isfile(self.username+'_artists.pickle'):
+        if not os.path.isfile('data/'+self.username+'_artists.pickle'):
             f = open(self.username+'_artists.pickle', 'ab+')
             f.close()
-        with open(self.username+'_artists.pickle', 'wb+') as f:
+        with open('data/'+self.username+'_artists.pickle', 'wb+') as f:
             pickle.dump(self.artists, f, pickle.HIGHEST_PROTOCOL)
             f.close()
 
-        if not os.path.isfile(self.username+'_albums.pickle'):
+        if not os.path.isfile('data/'+self.username+'_artists_genre.pickle'):
+            f = open(self.username+'_artists_genre.pickle', 'ab+')
+            f.close()
+        with open('data/'+self.username+'_artists_genre.pickle', 'wb+') as f:
+            pickle.dump(self.artists_genre, f, pickle.HIGHEST_PROTOCOL)
+            f.close()
+
+        if not os.path.isfile('data/'+self.username+'_albums.pickle'):
             f = open(self.username+'_albums.pickle', 'ab+')
             f.close()
-        with open(self.username+'_albums.pickle', 'wb+') as f:
+        with open('data/'+self.username+'_albums.pickle', 'wb+') as f:
             pickle.dump(self.albums, f, pickle.HIGHEST_PROTOCOL)
             f.close()
 
-        if not os.path.isfile(self.username+'_genders.pickle'):
+        if not os.path.isfile('data/'+self.username+'_genders.pickle'):
             f = open(self.username+'_genders.pickle', 'ab+')
             f.close()
-        with open(self.username+'_genders.pickle', 'wb+') as f:
+        with open('data/'+self.username+'_genders.pickle', 'wb+') as f:
             pickle.dump(self.genders, f, pickle.HIGHEST_PROTOCOL)
             f.close()
         print("--- %s seconds ---" % (time.time() - self.start_time))
 
-    def get_cache_data(self):
-        with open(self.username+'_songs.pickle', 'rb+') as f:
-            try:
-                self.songs = pickle.load(f)
-                f.close()
-            except Exception as e:
-                print(e)
-        with open(self.username+'_timesongs.pickle', 'rb+') as f:
-            try:
-                self.time_songs = pickle.load(f)
-                f.close()
-            except Exception as e:
-                print(e)
-        with open(self.username+'_artists.pickle', 'rb+') as f:
-            try:
-                self.artists = pickle.load(f)
-                f.close()
-            except Exception as e:
-                print(e)
-        with open(self.username+'_albums.pickle', 'rb+') as f:
-            try:
-                self.albums = pickle.load(f)
-                f.close()
-            except Exception as e:
-                print(e)
-        with open(self.username+'_genders.pickle', 'rb+') as f:
-            try:
-                self.genders = pickle.load(f)
-                f.close()
-            except Exception as e:
-                print(e)
+    def get_data(self, update=False):
+        if not os.path.isfile('data/'+self.username+'_songs.pickle') or update:
+            self.get_music(1)
+            self.cache_data()
+            print(self.artists_genre)
+        else:
+            with open('data/'+self.username+'_songs.pickle', 'rb+') as f:
+                try:
+                    self.songs = pickle.load(f)
+                    f.close()
+                except Exception as e:
+                    print(e)
+            with open('data/'+self.username+'_timesongs.pickle', 'rb+') as f:
+                try:
+                    self.time_songs = pickle.load(f)
+                    f.close()
+                except Exception as e:
+                    print(e)
+            with open('data/'+self.username+'_artists.pickle', 'rb+') as f:
+                try:
+                    self.artists = pickle.load(f)
+                    f.close()
+                except Exception as e:
+                    print(e)
+            with open('data/'+self.username+'_artists_genre.pickle', 'rb+') as f:
+                try:
+                    self.artists_genre = pickle.load(f)
+                    f.close()
+                except Exception as e:
+                    print(e)
+            with open('data/'+self.username+'_albums.pickle', 'rb+') as f:
+                try:
+                    self.albums = pickle.load(f)
+                    f.close()
+                except Exception as e:
+                    print(e)
+            with open('data/'+self.username+'_genders.pickle', 'rb+') as f:
+                try:
+                    self.genders = pickle.load(f)
+                    f.close()
+                except Exception as e:
+                    print(e)
 if __name__ == "__main__":
-    # #ernestollamas, gabrielahrlr, ladeira_maira, mehreenikram
+    # options: ernestollamas, gabrielahrlr, ladeira_maira, mehreenikram
     test = GetMusic('mehreenikram')
-    #test.get_cache_data()
-    #'
-    # unknown = 0
-    # angry = 0
-    # sad = 0
-    # calm = 0
-    # happy = 0
-    # for s in test.get_time_songs():
-    #     if s[6] == 'Unknown':
-    #         unknown += 1
-    #     elif s[6] == 'Angry':
-    #         angry += 1
-    #     elif s[6] == 'Sad':
-    #         sad += 1
-    #     elif s[6] == 'Calm':
-    #         calm += 1
-    #     elif s[6] == 'Happy':
-    #         happy += 1
-    # print('Unknown '+str(unknown))
-    # print('Angry '+str(angry))
-    # print('Sad '+str(sad))
-    # print('Calm '+str(calm))
-    # print('Happy '+str(happy))
-    # #print(test.get_songs())
-    # #print(test.get_artists())
-    # #print(test.get_albums())
-    test.get_music(1)
-    test.cache_data()
+    update_data = True
+    test.get_data(update=update_data)
 

@@ -99,8 +99,9 @@
 
     <script>
         jQuery(document).ready(function ($) {
-            $('#slider1_container').width($(window).width());
-            $('#slider1_container').find('.slides').width($(window).width());
+            var slides_container = ('#slider1_container');
+            slides_container.width($(window).width());
+            slides_container.find('.slides').width($(window).width());
             var options = { $AutoPlay: true };
             var jssor_slider1 = new $JssorSlider$('slider1_container', options);
         });

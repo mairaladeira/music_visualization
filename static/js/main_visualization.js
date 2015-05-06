@@ -321,8 +321,8 @@ function get_gender_canvas(){
     var histogram = $('#histogram');
     var histogram_days = histogram.find('.day');
     var i = 0;
-    var genders = ['jazz_blues', 'pop', 'metal', 'rock', 'hip-hop_rap','dance_electronic', 'alternative_indie', 'reb_soul', 'other'];
     var canvas_ids = ['jazz_canvas', 'pop_canvas', 'metal_canvas', 'rock_canvas','hip-hop_canvas', 'dance_canvas', 'alternative_canvas', 'reb_canvas', 'others_canvas'];
+    var genders = ['jazz_blues', 'pop', 'metal', 'rock', 'hip-hop_rap','dance_electronic', 'alternative_indie', 'reb_soul', 'other'];
     var colors = ['#774306', '#FE0000', '#97253F', '#016AAB', '#019F4C', '#FE7314', '#6869A9', '#FBDE06', '#F0C896'];
     var dataPoints = {
         jazz:[],
