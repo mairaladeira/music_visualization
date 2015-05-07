@@ -26,6 +26,17 @@
                 <h5>Mehreen</h5>
                 <canvas id="mehreen"></canvas>
             </div>
+            <ul id="genders_subtitle">
+                <li><span class="jazz_blues"></span>Jazz/blues</li>
+                <li><span class="pop"></span>Pop</li>
+                <li><span class="metal"></span>Metal</li>
+                <li><span class="rock"></span>Rock</li>
+                <li><span class="hip-hop_rap"></span>Hip-hop/Rap</li>
+                <li><span class="dance_electronic"></span>Dance/Electronic</li>
+                <li><span class="alternative_indie"></span>Alternative/Indie</li>
+                <li><span class="reb_soul"></span>R&B/Soul</li>
+                <li><span class="other"></span>Other</li>
+            </ul>
         </div>
         <div>
             <h3>Add Venn Diagram Here</h3>
@@ -111,18 +122,7 @@
         </div>
     </div>
     <footer>
-        <ul id="genders_subtitle">
-            <li><span class="jazz_blues"></span>Jazz/blues</li>
-            <li><span class="pop"></span>Pop</li>
-            <li><span class="metal"></span>Metal</li>
-            <li><span class="rock"></span>Rock</li>
-            <li><span class="hip-hop_rap"></span>Hip-hop/Rap</li>
-            <li><span class="dance_electronic"></span>Dance/Electronic</li>
-            <li><span class="alternative_indie"></span>Alternative/Indie</li>
-            <li><span class="reb_soul"></span>R&B/Soul</li>
-            <li><span class="other"></span>Other</li>
-        </ul>
-        <ul id="extra_pages" style="float: right">
+        <ul id="extra_pages">
             <li><a href="/">Start Page</a></li>
             <li><a href="about">About</a></li>
             <li><a href="people">People</a></li>
@@ -136,8 +136,6 @@
         var maira_artists = {{maira_artists|safe}};
         var mehreen_artists = {{mehreen_artists|safe}};
         var artists_genres = {{artists_genres|safe}};
-        //console.log(maira_songs);
-        //console.log(mehreen_songs);
         crete_word_clouds();
         initialize_frequencies();
         create_hours_comparison('total');

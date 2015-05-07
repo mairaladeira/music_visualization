@@ -287,3 +287,10 @@ function get_hours_comparison_title(t) {
             return 'Others';
     }
 }
+
+function create_venn_diagram(){
+    /*
+    array1.filter(function(n) {
+        return array2.indexOf(n) != -1
+    });*/
+}

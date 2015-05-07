@@ -308,6 +308,12 @@ footer ul {
     color: #016AAB;
 }
 
+#genders_subtitle {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
 #genders_subtitle li{
     float: left;
     margin: 0;
@@ -608,8 +614,14 @@ canvas.show {
     margin: 0;
 }
 .comparison .histogram_title {
-    left: -20px;
+    left: 0;
+    margin-left: 0;
 }
+
+.comparison h3 {
+    margin-left: 20px;
+}
+
 #music_overflow {
     position: fixed;
     width: 100%;
@@ -761,7 +773,7 @@ canvas.show {
     width: 216px;
 }
 
-.about #extra_pages, .people #extra_pages {
+.about #extra_pages, .people #extra_pages, .comparison #extra_pages {
     width: 246px;
 }
 
@@ -897,8 +909,14 @@ canvas.show {
 
 .favorite_artists {
     float: left;
-    width: 100%;
+    width: 98%;
     margin-bottom: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.favorite_artists h3 {
+    margin-left: 0;
 }
 
 .hour .person_data {
