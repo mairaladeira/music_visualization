@@ -136,37 +136,52 @@ function initialize_frequencies(){
         }
 
     });
-    var g_amount_day = 0;
-    var ma_amount_day = 0;
-    var me_amount_day = 0;
-    update_max(gabriela_frequencies, g_amount_day);
-    update_max(maira_frequencies, ma_amount_day);
-    update_max(mehreen_frequencies, me_amount_day);
+    set_events();
 }
 
 function update_max(genre) {
+    max = 0;
     $.each(gabriela_frequencies, function(i,v){
         if (genre == 'total') {
             if (v.total > max) {
                 max = v.total;
             }
+        } else {
+            if(v[genre] > max) {
+                max = v[genre]
+            }
         }
     });
     $.each(maira_frequencies, function(i,v){
-        if (v.total > max) {
-            max = v.total;
+        if (genre == 'total') {
+            if (v.total > max) {
+                max = v.total;
+            }
+        } else {
+            if(v[genre] > max) {
+                max = v[genre]
+            }
         }
     });
     $.each(mehreen_frequencies, function(i,v){
-        if (v.total > max) {
-            max = v.total;
+        if (genre == 'total') {
+            if (v.total > max) {
+                max = v.total;
+            }
+        } else {
+            if(v[genre] > max) {
+                max = v[genre]
+            }
         }
     });
+    max ++;
 }
 
 function create_hours_comparison(t){
+    update_max(t);
+    update_max(t);
+    update_max(t);
     var hours_frequency_axis_html = '';
-    //console.log(max);
     var height = Math.floor(503/max);
     for(var i = max; i >= 0; i --) {
         hours_frequency_axis_html += '<li style="height: '+height+'px;">'+i+'</li>'
@@ -174,7 +189,7 @@ function create_hours_comparison(t){
     get_canvas(gabriela_frequencies, t, 'histogram_gabriela', '#90d680', height);
     get_canvas(maira_frequencies, t, 'histogram_maira', '#e81998', height);
     get_canvas(mehreen_frequencies, t, 'histogram_mehreen', '#c398e0', height);
-    $('#hours_frequency_axis').addClass('unfrequent').append(hours_frequency_axis_html);
+    $('#hours_frequency_axis').addClass('unfrequent').html('').append(hours_frequency_axis_html);
 }
 
 function get_point(genre, hour, data, height){
@@ -202,13 +217,13 @@ function get_canvas(dataPoints, genre, canvas_id, color, square_height){
     var ctx = canvas.getContext('2d');
     canvas.width = 49*24;
     canvas.height = 503;
+    ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
     ctx.lineWidth = 3;
     var point = get_point(genre, 0, dataPoints[0], square_height);
     ctx.beginPath();
     ctx.moveTo(point.x, point.y);
     $.each(dataPoints, function(i, v){
         var point = get_point(genre, i, v, square_height);
-        //ctx.fillRect(point.x-2,point.y, 5, 5);
         if (i == dataPoints.length -2) {
             var point2 = get_point(genre, i, dataPoints[i+1], square_height);
             ctx.lineTo(point.x, point.y);
@@ -236,4 +251,39 @@ function get_canvas(dataPoints, genre, canvas_id, color, square_height){
     });
     ctx.strokeStyle = color;
     ctx.stroke();
+}
+
+function set_events() {
+    $('.button').bind('click', function(){
+        var t = $(this).attr('data-id');
+        create_hours_comparison(t);
+        $('.button').removeClass('selected');
+        $(this).addClass('selected');
+        $('#hours_histogram').find('.title').html(get_hours_comparison_title(t));
+    });
+}
+
+function get_hours_comparison_title(t) {
+    switch (t) {
+        case 'total':
+            return 'All Genres';
+        case 'jazz_blues':
+            return 'Jazz/Blues';
+        case 'pop':
+            return 'Pop';
+        case 'metal':
+            return 'Metal';
+        case 'rock':
+            return 'Rock';
+        case 'hip-hop_rap':
+            return 'Hip-hop/Rap';
+        case 'dance_electronic':
+            return 'Dance/Electronic';
+        case 'alternative_indie':
+            return 'Alternative/Indie';
+        case 'reb_soul':
+            return 'R&B/Soul';
+        case 'other':
+            return 'Others';
+    }
 }
