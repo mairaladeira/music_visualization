@@ -93,7 +93,9 @@ def click(button):
             artists_genres = gabriela.get_artists_genre().copy()
             artists_genres.update(maira.get_artists_genre())
             artists_genres.update(mehreen.get_artists_genre())
-            #print(artists_genres)
+            #print(gabriela_songs)
+            #print(maira_songs)
+            #print(mehreen_songs)
             return render_template('comparison.html',
                                    gabriela_songs=json.dumps(gabriela_songs),
                                    gabriela_artists=json.dumps(gabriela_artists),

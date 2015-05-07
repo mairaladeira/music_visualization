@@ -5,11 +5,11 @@
     <title>DMKM Visualization project</title>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/default.css') }}">
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="{{ url_for('static', filename='js/main_visualization.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/comparison.js') }}"></script>
     <script src="{{ url_for('static', filename='js/wordcloud2.js') }}"></script>
 
 </head>
-<body>
+<body class="comparison">
     <header>EM-DMKM Visualization Project - Comparison of data</header>
     <div class="content">
         <div class="favorite_artists">
@@ -27,10 +27,61 @@
                 <canvas id="mehreen"></canvas>
             </div>
         </div>
-        <div id="hours_analysis">
+        <div>
+            <h3>Add Venn Diagram Here</h3>
+        </div>
+        <div id="hours_analysis" class="comparison">
             <h3 class="histogram_title">Hours Histogram Representation</h3>
+            <ul class="buttons">
+                <li class="title">Evolution lines:</li>
+                <li class="button getLine selected" id="all_line" data-id="others_canvas">All Genres</li>
+                <li class="button getLine" id="show_jazz_line" data-id="jazz_canvas">Jazz/Blues</li>
+                <li class="button getLine" id="show_pop_line" data-id="pop_canvas">Pop</li>
+                <li class="button getLine" id="show_metal_line" data-id="metal_canvas">Metal</li>
+                <li class="button getLine" id="show_rock_line" data-id="rock_canvas">Rock</li>
+                <li class="button getLine" id="show_hip-hop_line" data-id="hip-hop_canvas">Hip-hop/Rap</li>
+                <li class="button getLine" id="show_dance_line" data-id="dance_canvas">Dance/Electronic</li>
+                <li class="button getLine" id="show_alternative_line" data-id="alternative_canvas">Alternative/indie</li>
+                <li class="button getLine" id="show_reb_line" data-id="reb_canvas">R&B/Soul</li>
+                <li class="button getLine" id="show_others_line" data-id="others_canvas">Others</li>
+            </ul>
+
             <ul id="hours_frequency_axis"></ul>
-            <div id="hours_histogram"></div>
+            <div id="hours_histogram">
+                <div class="hour hour_0"></div>
+                <div class="hour hour_1"></div>
+                <div class="hour hour_2"></div>
+                <div class="hour hour_3"></div>
+                <div class="hour hour_4"></div>
+                <div class="hour hour_5"></div>
+                <div class="hour hour_6"></div>
+                <div class="hour hour_7"></div>
+                <div class="hour hour_8"></div>
+                <div class="hour hour_9"></div>
+                <div class="hour hour_10"></div>
+                <div class="hour hour_11"></div>
+                <div class="hour hour_12"></div>
+                <div class="hour hour_13"></div>
+                <div class="hour hour_14"></div>
+                <div class="hour hour_15"></div>
+                <div class="hour hour_16"></div>
+                <div class="hour hour_17"></div>
+                <div class="hour hour_18"></div>
+                <div class="hour hour_19"></div>
+                <div class="hour hour_20"></div>
+                <div class="hour hour_21"></div>
+                <div class="hour hour_22"></div>
+                <div class="hour hour_23"></div>
+                <canvas id="histogram_gabriela" class="histogram_canvas"></canvas>
+                <canvas id="histogram_maira" class="histogram_canvas"></canvas>
+                <canvas id="histogram_mehreen" class="histogram_canvas"></canvas>
+                <h5 class="title all">All Genres</h5>
+                <div class="subtitles">
+                    <div class="gabriela_sub"><span></span>Gabriela</div>
+                    <div class="maira_sub"><span></span>Maira</div>
+                    <div class="mehreen_sub"><span></span>Mehreen</div>
+                </div>
+            </div>
             <ul id="hours_interval_axis">
                 <li>0</li>
                 <li>1</li>
@@ -71,16 +122,10 @@
             <li><span class="reb_soul"></span>R&B/Soul</li>
             <li><span class="other"></span>Other</li>
         </ul>
-        <ul id="data-source">
-            <li class="change_data" id="mehreenikram">Mehreen</li>
-            <li class="change_data" id="ladeira_maira">Maíra</li>
-            <li class="change_data" id="gabrielahrlr">Gabriela</li>
-            <!--<li class="change_data" id="ernestollamas">Ernesto</li>-->
-        </ul>
-        <ul id="extra_pages">
+        <ul id="extra_pages" style="float: right">
+            <li><a href="/">Start Page</a></li>
             <li><a href="about">About</a></li>
             <li><a href="people">People</a></li>
-            <li><a href="comparison">Comparison</a></li>
         </ul>
     </footer>
     <script>
@@ -91,72 +136,11 @@
         var maira_artists = {{maira_artists|safe}};
         var mehreen_artists = {{mehreen_artists|safe}};
         var artists_genres = {{artists_genres|safe}};
-        var colors = {
-            'jazz_blues': '#774306',
-            'pop':'#FE0000',
-            'metal':'#97253F',
-            'rock':'#016AAB',
-            'hip-hop_rap':'#019F4C',
-            'dance_electronic':'#FE7314',
-            'alternative_indie': '#6869A9',
-            'reb_soul':'#FBDE06',
-            'other':'#F0C896'};
-
-        var minsize = '8px';
-        var gabriela_average = 0;
-        $.each(gabriela_artists, function(i,v){
-            gabriela_average = gabriela_average + v[1];
-        });
-        gabriela_average = gabriela_average/gabriela_artists.length;
-        var maira_average = 0;
-        $.each(maira_artists, function(i,v){
-            maira_average = maira_average + v[1];
-        });
-        maira_average = maira_average/maira_artists.length;
-        var mehreen_average = 0;
-        $.each(mehreen_artists, function(i,v){
-            mehreen_average = mehreen_average + v[1];
-        });
-        mehreen_average = mehreen_average/mehreen_artists.length;
-        WordCloud(document.getElementById('gabriela'), {
-            list: gabriela_artists,
-            shuffle: false,
-            hover: function(){},
-            minSize: minsize,
-            weightFactor: function (size) {
-                return Math.max(1.5*(size/gabriela_average), 10);
-            },
-            backgroundColor: '#333333',
-            color: function(word){
-                return colors[artists_genres[word]];
-            }
-        });
-        WordCloud(document.getElementById('maira'), {
-            list: maira_artists,
-            shuffle: false,
-            hover: function(){},
-            minSize: minsize,
-            weightFactor: function (size) {
-                return Math.max(2.5*(size/maira_average), 10);
-            },
-            backgroundColor: '#333333',
-            color: function(word){
-                return colors[artists_genres[word]];
-            }
-        });
-        WordCloud(document.getElementById('mehreen'), {
-            list: mehreen_artists,
-            shuffle: false,
-            hover: function(){},
-            minSize: minsize,
-            weightFactor: function (size) {
-                return Math.max(2.5*(size/mehreen_average), 10);
-            },
-            backgroundColor: '#333333',
-            color: function(word){
-                return colors[artists_genres[word]];
-            }
-        });
+        //console.log(maira_songs);
+        //console.log(mehreen_songs);
+        crete_word_clouds();
+        initialize_frequencies();
+        create_hours_comparison('total');
     </script>
 
 </body>

@@ -100,6 +100,11 @@ header span {
     border-left: 1px solid #fff;
 
 }
+
+#hours_histogram > :first-child{
+    border-left: 1px solid #999;
+}
+
 .day.day_1 {
     border-left: 1px solid #999 !important;
 }
@@ -234,6 +239,10 @@ footer {
     margin: 5px 0;
 }
 
+.comparison #hours_interval_axis {
+    width: 1177px;
+}
+
 #hours_interval_axis::after {
     content: "Hours of the Day";
     width: 100%;
@@ -261,7 +270,9 @@ footer {
 #hours_interval_axis li {
     width: 40px;
 }
-
+.comparison #hours_interval_axis li {
+    width: 49px;
+}
 #hours_interval_axis li {
     opacity: 1;
 }
@@ -431,6 +442,10 @@ div.tooltip span.extra_info .info div {
     width: 980px;
 }
 
+.content #hours_analysis.comparison {
+    width: 95%;
+}
+
 #histogram .square, #hours_histogram .square {
     height: 20px;
     width: 100%;
@@ -454,7 +469,10 @@ div.tooltip span.extra_info .info div {
 #hours_histogram {
     width: 960px;
 }
-
+.comparison #hours_histogram {
+    width: 1176px;
+    margin-left: 19px;
+}
 #canvas_overflow.show_approximation {
     display: block;
 }
@@ -468,6 +486,8 @@ div.tooltip span.extra_info .info div {
     float: left;
     background-color: #eeeeee;
 }
+
+
 
 #hours_histogram .hour .square {
     position: absolute;
@@ -587,7 +607,9 @@ canvas.show {
     left: 20px;
     margin: 0;
 }
-
+.comparison .histogram_title {
+    left: -20px;
+}
 #music_overflow {
     position: fixed;
     width: 100%;
@@ -740,6 +762,10 @@ canvas.show {
 }
 
 .about #extra_pages, .people #extra_pages {
+    width: 246px;
+}
+
+.about #extra_pages, .people #extra_pages, .comparison #extra_pages {
     margin-left: 10px;
 }
 
@@ -867,4 +893,68 @@ canvas.show {
     position: relative;
     margin: 0;
     float: left;
+}
+
+.favorite_artists {
+    float: left;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.hour .person_data {
+    width: 16px;
+    float: left;
+    height: 100%;
+    position: relative;
+}
+
+.comparison #hours_histogram .hour {
+    width: 48px;
+}
+
+
+.histogram_canvas {
+    display: block;
+    margin-left: -1px;
+}
+
+#hours_histogram .title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    border-left: none;
+}
+
+#hours_histogram .subtitles{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    background-color: rgba(170,170,170,0.5);
+    border-left: none;
+}
+
+#hours_histogram .subtitles div {
+    line-height: 1.2;
+
+}
+
+#hours_histogram .subtitles div span {
+    height: 10px;
+    line-height: 1;
+    width: 10px;
+    float: left;
+    margin-top: 4px;
+    margin-right: 9px;
+}
+#hours_histogram .subtitles div.gabriela_sub span {
+    background-color: #90d680;
+}
+#hours_histogram .subtitles div.maira_sub span {
+    background-color: #e81998;
+}
+#hours_histogram .subtitles div.mehreen_sub span {
+    background-color: #c398e0;
 }

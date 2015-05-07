@@ -7,8 +7,6 @@ var histogram_square_height = 0;
 function render_main_visualization(){
     //this function expects the songs array to be sorted from the oldest to the newest.
     var date = songs[0].timestamp;
-    var n = date.getTimezoneOffset();
-    console.log(n);
     var last_day = songs[songs.length - 1].timestamp;
     var amount_days =  Math.ceil((last_day-date)/(1000*60*60*24));
     if (amount_days > 100) {
