@@ -144,8 +144,20 @@ function initialize_frequencies(){
     update_max(mehreen_frequencies, me_amount_day);
 }
 
-function update_max(frequencies) {
-    $.each(frequencies, function(i,v){
+function update_max(genre) {
+    $.each(gabriela_frequencies, function(i,v){
+        if (genre == 'total') {
+            if (v.total > max) {
+                max = v.total;
+            }
+        }
+    });
+    $.each(maira_frequencies, function(i,v){
+        if (v.total > max) {
+            max = v.total;
+        }
+    });
+    $.each(mehreen_frequencies, function(i,v){
         if (v.total > max) {
             max = v.total;
         }
