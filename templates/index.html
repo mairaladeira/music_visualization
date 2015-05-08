@@ -2,14 +2,16 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>DMKM Visualization project</title>
+    <title>Music Insights</title>
+    <head profile="http://www.w3.org/2005/10/profile">
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='img/favicon.jpg') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/default.css') }}">
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="{{ url_for('static', filename='js/main_visualization.js') }}"></script>
 
 </head>
 <body>
-    <header>EM-DMKM Visualization Project - Data source: <span id="datasource">{{username}}</span></header>
+    <header><span class="logo"></span> Data source: <span id="datasource">{{username}}</span></header>
     <div class="content">
         <ul id="hours_axis">
             <li>0</li>

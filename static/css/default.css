@@ -4,19 +4,22 @@ body {
 }
 
 header {
-    padding: 7px 0;
-    text-align: center;
-    font-size: 25px;
-    width: 100%;
-    position: fixed;
-    z-index: 2;
-    top: 0;
-    background-color: white;
-    left: 0;
+  padding: 7px 0;
+  text-align: left;
+  font-size: 21px;
+  width: 100%;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  background-color: white;
+  left: 0;
+  color: #535353;
+  line-height: 1.7;
+  font-weight: lighter;
 }
 
 header span {
-    color: #016AAB;
+    color: #353535;
 }
 
 #visualization {
@@ -975,4 +978,29 @@ canvas.show {
 }
 #hours_histogram .subtitles div.mehreen_sub span {
     background-color: #c398e0;
+}
+
+
+.venntooltip {
+    position: absolute;
+    text-align: center;
+    width: 128px;
+    height: 16px;
+    background: #333;
+    color: #ddd;
+    padding: 2px;
+    border: none;
+    border-radius: 8px;
+    opacity: 0;
+    z-index: 100 !important;
+}
+
+.logo {
+    background-image: url(../img/logo.png);
+    width: 200px;
+    height: 35px;
+    float: left;
+    background-size: auto 100%;
+    background-position: center;
+    background-repeat: no-repeat;
 }

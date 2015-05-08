@@ -2,7 +2,9 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>DMKM Visualization project</title>
+    <title>Music Insights - Comparison</title>
+    <head profile="http://www.w3.org/2005/10/profile">
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='img/favicon.jpg') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/default.css') }}">
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="{{ url_for('static', filename='js/comparison.js') }}"></script>
@@ -12,7 +14,7 @@
 
 </head>
 <body class="comparison">
-    <header>EM-DMKM Visualization Project - Comparison of data</header>
+    <header><span class="logo"></span> Comparison of data</header>
     <div class="content">
         <div class="favorite_artists">
             <h3>Favorite Artists</h3>
@@ -41,7 +43,7 @@
             </ul>
         </div>
         <div>
-            <h3>Add Venn Diagram Here</h3>
+            <h3>Venn Diagram of the Artists</h3>
             <div id="venn"></div>
         </div>
         <div id="hours_analysis" class="comparison">
