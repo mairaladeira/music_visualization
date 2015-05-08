@@ -1,9 +1,9 @@
 /**
  * Created by Maira on 5/7/15.
  */
-var g_artists_list = {};
-var ma_artists_list = {};
-var me_artists_list = {};
+var g_artists_list = [];
+var ma_artists_list = [];
+var me_artists_list = [];
 function crete_word_clouds(){
     var colors = {
         'jazz_blues': '#774306',
@@ -20,29 +20,26 @@ function crete_word_clouds(){
     var gabriela_average = 0;
     $.each(gabriela_artists, function(i,v){
         gabriela_average = gabriela_average + v[1];
-        if (!v[0] in g_artists_list) {
-          g_artists_list[v[0]] = true;
+        if (g_artists_list.indexOf(v[0]) == -1) {
+          g_artists_list.push(v[0]);
         }
     });
     gabriela_average = gabriela_average/gabriela_artists.length;
     var maira_average = 0;
     $.each(maira_artists, function(i,v){
         maira_average = maira_average + v[1];
-        if (!v[0] in ma_artists_list) {
-          ma_artists_list[v[0]] = true;
+        if (ma_artists_list.indexOf(v[0]) == -1) {
+          ma_artists_list.push(v[0]);
         }
     });
     maira_average = maira_average/maira_artists.length;
     var mehreen_average = 0;
     $.each(mehreen_artists, function(i,v){
         mehreen_average = mehreen_average + v[1];
-        if (!v[0] in me_artists_list) {
-          me_artists_list[v[0]] = true;
+        if (me_artists_list.indexOf(v[0]) == -1) {
+          me_artists_list.push(v[0]);
         }
     });
-    console.log(g_artists_list);
-    console.log(ma_artists_list);
-    console.log(me_artists_list);
     mehreen_average = mehreen_average/mehreen_artists.length;
     WordCloud(document.getElementById('gabriela'), {
         list: gabriela_artists,
@@ -303,8 +300,49 @@ function get_hours_comparison_title(t) {
 }
 
 function create_venn_diagram(){
-    /*
-    array1.filter(function(n) {
-        return array2.indexOf(n) != -1
-    });*/
+    var gabriela = 0;
+    var maira = 0;
+    var mehreen = 0;
+    var gabriela_maira = 0;
+    var gabriela_mehreen = 0;
+    var maira_mehreen = 0;
+    var gabriela_maira_mehreen = 0;
+    $.each(Object.keys(artists_genres), function(i, v){
+        if(g_artists_list.indexOf(v) != -1){
+            gabriela ++;
+            if (ma_artists_list.indexOf(v) != -1) {
+                maira++;
+                gabriela_maira++;
+                if(me_artists_list.indexOf(v) != -1){
+                    mehreen ++;
+                    gabriela_mehreen ++;
+                    maira_mehreen ++;
+                    gabriela_maira_mehreen ++;
+                }
+            }
+        } else {
+            if(ma_artists_list.indexOf(v) != -1){
+                maira ++;
+                if(me_artists_list.indexOf(v) != -1) {
+                    mehreen++;
+                    maira_mehreen++;
+                }
+            } else {
+                if(me_artists_list.indexOf(v) != -1){
+                    mehreen++;
+                }
+            }
+        }
+    });
+    var sets = [ {sets: ['Gabriela'], size: gabriela},
+                 {sets: ['Maira'], size: maira},
+                 {sets: ['Mehreen'], size: mehreen},
+                 {sets: ['Gabriela','Maira'], size: gabriela_maira},
+                 {sets: ['Gabriela','Mehreen'], size: gabriela_mehreen},
+                 {sets: ['Maira','Mehreen'], size: maira_mehreen},
+                 {sets: ['Gabriela', 'Maira','Mehreen'], size: gabriela_maira_mehreen}
+            ];
+
+    var chart = venn.VennDiagram();
+    d3.select("#venn").datum(sets).call(chart);
 }
