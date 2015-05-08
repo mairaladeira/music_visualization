@@ -113,9 +113,11 @@ function get_hours_histogram() {
         {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0},
         {total: 0, jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0}
     ];
+    var genres_frequencies = {jazz_blues:0, pop:0, metal:0, rock:0, 'hip-hop_rap':0, dance_electronic:0, alternative_indie:0, reb_soul:0, other:0};
     $.each(songs, function(i, v){
         frequencies[parseInt(v.hour)].total++;
         frequencies[parseInt(v.hour)][v.gender]++;
+        genres_frequencies[v.gender] ++;
     });
     var max = 0;
     $.each(frequencies, function(i, v){
@@ -164,8 +166,31 @@ function get_hours_histogram() {
             html += '<div class="square other" data-title="'+ parseFloat((v.other/ v.total)*100).toFixed(2)+'%" style="height: '+(height*v.other)+'px; bottom:'+bottom+'px;"></div>';
         html += '</div>';
     });
-    $('#hours_frequency_axis').addClass(class_n).append(hours_frequency_axis_html);
-    $('#hours_histogram').append(html);
+
+    var g_max = 0;
+    var genre_frequency_axis_html = '';
+    var genre_html = '';
+    $.each(genres_frequencies, function(i,v){
+        if (v > g_max) {
+            g_max = v;
+        }
+    });
+    var g_height = Math.round(505/g_max);
+    console.log(g_height);
+    var class_n_g = 'frequent';
+    if(g_max < 200) {
+        class_n_g = 'unfrequent';
+    }
+    for(var j = g_max; j >= 0; j --) {
+        genre_frequency_axis_html += '<li style="height: '+g_height+'px;">'+j+'</li>'
+    }
+    $.each(genres_frequencies, function(i, v){
+        genre_html += '<div class="genre"><div class="square '+i+'" data-title="'+parseFloat((v/ songs.length)*100).toFixed(2)+'%" style="height:'+v*g_height+'px; bottom:0;"></div></div>';
+    });
+    $('#hours_frequency_axis').html('').height(height*max+5).addClass(class_n).append(hours_frequency_axis_html);
+    $('#genre_frequency_axis').html('').height(g_height*g_max+5).addClass(class_n_g).append(genre_frequency_axis_html);
+    $('#hours_histogram').height(height*max+5).append(html);
+    $('#genre_histogram').height(g_height*g_max+5).append(genre_html);
 }
 
 function format_music_name_for_html(name) {
@@ -501,7 +526,7 @@ $(document).ready(function(){
     $(window).bind('scroll', function(){
         var offset_left = $(this).scrollLeft();
         $('#hours_axis').css('left', offset_left - 10);
-        $('#frequency').css('left', offset_left - 20);
+        $('#frequency').css('left', offset_left - 25);
         $('.buttons').css('left', offset_left +20);
         $('.histogram_title').css('left', offset_left +20);
         $('.right_box').removeClass('right_box');
@@ -562,6 +587,7 @@ $(document).ready(function(){
         $('#others_canvas').html('');
         $('#hours_frequency_axis').html('');
         $('#hours_histogram').html('');
+        $('#genre_histogram').html('');
         $('#datasource').html(id);
         $('.change_data').removeClass('selected');
         $('#'+id).addClass('selected');

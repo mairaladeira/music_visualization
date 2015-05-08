@@ -113,6 +113,10 @@ function new_songs_frequency() {
 var gabriela_frequencies = new_songs_frequency();
 var maira_frequencies = new_songs_frequency();
 var mehreen_frequencies = new_songs_frequency();
+var g_songs_list = [];
+var ma_songs_list = [];
+var me_songs_list = [];
+var songs_list = [];
 var max = 0;
 function initialize_frequencies(){
     $.each(gabriela_songs, function(i,v){
@@ -124,7 +128,12 @@ function initialize_frequencies(){
             gabriela_frequencies[parseInt(hour)].total++;
             gabriela_frequencies[parseInt(hour)][gender]++;
         }
-
+        if(g_songs_list.indexOf(v[0]) == -1){
+            g_songs_list.push(v[0]);
+        }
+        if(songs_list.indexOf(v[0]) == -1){
+            songs_list.push(v[0]);
+        }
     });
     $.each(maira_songs, function(i,v){
         var date_ts = parseInt(v[4], 10);
@@ -135,6 +144,12 @@ function initialize_frequencies(){
             maira_frequencies[parseInt(hour)].total++;
             maira_frequencies[parseInt(hour)][gender]++;
         }
+        if(ma_songs_list.indexOf(v[0]) == -1){
+            ma_songs_list.push(v[0]);
+        }
+        if(songs_list.indexOf(v[0]) == -1){
+            songs_list.push(v[0]);
+        }
     });
     $.each(mehreen_songs, function(i,v){
         var date_ts = parseInt(v[4], 10);
@@ -144,6 +159,12 @@ function initialize_frequencies(){
             var gender = v[1];
             mehreen_frequencies[parseInt(hour)].total++;
             mehreen_frequencies[parseInt(hour)][gender]++;
+        }
+        if(me_songs_list.indexOf(v[0]) == -1){
+            me_songs_list.push(v[0]);
+        }
+        if(songs_list.indexOf(v[0]) == -1){
+            songs_list.push(v[0]);
         }
 
     });
@@ -366,6 +387,98 @@ function create_venn_diagram(){
         // Display a tooltip with the current size
         tooltip.transition().duration(400).style("opacity", .9);
         tooltip.text(d.size + " Artists");
+
+        // highlight the current path
+        var selection = d3.select(this).transition("tooltip").duration(400);
+        selection.select("path")
+            .style("stroke-width", 3)
+            .style("fill-opacity", d.sets.length == 1 ? .4 : .1)
+            .style("stroke-opacity", 1);
+    })
+
+    .on("mousemove", function() {
+        tooltip.style("left", (d3.event.pageX) + "px")
+               .style("top", (d3.event.pageY - 28) + "px");
+    })
+
+    .on("mouseout", function(d, i) {
+        tooltip.transition().duration(400).style("opacity", 0);
+        var selection = d3.select(this).transition("tooltip").duration(400);
+        selection.select("path")
+            .style("stroke-width", 0)
+            .style("fill-opacity", d.sets.length == 1 ? .25 : .0)
+            .style("stroke-opacity", 0);
+    });
+
+}
+
+function create_venn_diagram_songs(){
+    var gabriela = 0;
+    var maira = 0;
+    var mehreen = 0;
+    var gabriela_maira = 0;
+    var gabriela_mehreen = 0;
+    var maira_mehreen = 0;
+    var gabriela_maira_mehreen = 0;
+    $.each(songs_list, function(i, v){
+        if(g_songs_list.indexOf(v) != -1){
+            gabriela ++;
+            if (ma_songs_list.indexOf(v) != -1) {
+                maira++;
+                gabriela_maira++;
+                if(me_songs_list.indexOf(v) != -1){
+                    mehreen ++;
+                    gabriela_mehreen ++;
+                    maira_mehreen ++;
+                    gabriela_maira_mehreen ++;
+                }
+            }
+        } else {
+            if(ma_songs_list.indexOf(v) != -1){
+                maira ++;
+                if(me_songs_list.indexOf(v) != -1) {
+                    mehreen++;
+                    maira_mehreen++;
+                }
+            } else {
+                if(me_songs_list.indexOf(v) != -1){
+                    mehreen++;
+                }
+            }
+        }
+    });
+    var sets = [ {sets: ['Gabriela'], size: gabriela},
+                 {sets: ['Maira'], size: maira},
+                 {sets: ['Mehreen'], size: mehreen},
+                 {sets: ['Gabriela','Maira'], size: gabriela_maira},
+                 {sets: ['Gabriela','Mehreen'], size: gabriela_mehreen},
+                 {sets: ['Maira','Mehreen'], size: maira_mehreen},
+                 {sets: ['Gabriela', 'Maira','Mehreen'], size: gabriela_maira_mehreen}
+            ];
+
+    var chart = venn.VennDiagram()
+                 .width(500)
+                 .height(500);
+
+    var div = d3.select("#venn_songs");
+    div.datum(sets).call(chart);
+
+    var tooltip = d3.select("body").append("div")
+        .attr("class", "venntooltip");
+
+    div.selectAll("path")
+        .style("stroke-opacity", 0)
+        .style("stroke", "#fff")
+        .style("stroke-width", 0);
+
+    div.selectAll("g")
+    .on("mouseover", function(d, i) {
+        // sort all the areas relative to the current item
+        venn.sortAreas(div, d);
+
+        // Display a tooltip with the current size
+        tooltip.transition().duration(400).style("opacity", .9);
+        tooltip.text(d.size + " Songs");
 
         // highlight the current path
         var selection = d3.select(this).transition("tooltip").duration(400);

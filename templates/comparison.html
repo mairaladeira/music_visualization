@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Music Insights - Comparison</title>
     <head profile="http://www.w3.org/2005/10/profile">
-    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='img/favicon.jpg') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/default.css') }}">
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="{{ url_for('static', filename='js/comparison.js') }}"></script>
@@ -42,9 +42,15 @@
                 <li><span class="other"></span>Other</li>
             </ul>
         </div>
-        <div>
-            <h3>Venn Diagram of the Artists</h3>
-            <div id="venn"></div>
+        <div class="venn_diagrams">
+            <div>
+                <h3>Venn Diagram of the Artists</h3>
+                <div id="venn"></div>
+            </div>
+            <div>
+                <h3>Venn Diagram of the Songs</h3>
+                <div id="venn_songs"></div>
+            </div>
         </div>
         <div id="hours_analysis" class="comparison">
             <h3 class="histogram_title">Time Searcher Representation</h3>
@@ -144,6 +150,7 @@
         crete_word_clouds();
         create_venn_diagram();
         initialize_frequencies();
+        create_venn_diagram_songs();
         create_hours_comparison('total');
     </script>
 

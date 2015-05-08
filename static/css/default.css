@@ -95,16 +95,16 @@ header span {
 .day {
     float: left;
 }
-#visualization > :nth-child(even), #histogram > :nth-child(even), #hours_histogram > :nth-child(even){
+#visualization > :nth-child(even), #histogram > :nth-child(even), #hours_histogram > :nth-child(even), #genre_histogram > :nth-child(even){
     border-left: 1px solid #fff;
 
 }
-#visualization > :nth-child(odd), #histogram > :nth-child(odd), #hours_histogram > :nth-child(odd) {
+#visualization > :nth-child(odd), #histogram > :nth-child(odd), #hours_histogram > :nth-child(odd), #genre_histogram > :nth-child(odd) {
     border-left: 1px solid #fff;
 
 }
 
-#hours_histogram > :first-child{
+.comparison #hours_histogram > :first-child{
     border-left: 1px solid #999;
 }
 
@@ -139,7 +139,7 @@ footer {
     display: none;
 }
 
-#hours_analysis .square:hover::after {
+#hours_analysis .square:hover::after, #genre_analysis .square:hover::after {
     content: attr(data-title);
     padding: 5px;
     color: #333;
@@ -234,7 +234,7 @@ footer {
     border-bottom: 1px solid #999 !important
 }
 
-.days_axis, #hours_interval_axis {
+.days_axis, #hours_interval_axis, #genre_interval_axis {
     clear: both;
     list-style: none;
     float: left;
@@ -246,7 +246,7 @@ footer {
     width: 1177px;
 }
 
-#hours_interval_axis::after {
+#hours_interval_axis::after, #genre_interval_axis::after {
     content: "Hours of the Day";
     width: 100%;
     height: 20px;
@@ -257,12 +257,16 @@ footer {
     margin-top: 10px;
 }
 
+#genre_interval_axis::after {
+    content: "Genre";
+}
+
 .content > .days_axis {
     padding: 0 0 0 40px;
 
 }
 
-.days_axis li, #hours_interval_axis li {
+.days_axis li, #hours_interval_axis li, #genre_interval_axis li {
     float: left;
     font-size: 8px;
     width: 21px;
@@ -273,10 +277,15 @@ footer {
 #hours_interval_axis li {
     width: 40px;
 }
+
+#genre_interval_axis li {
+    width: 80px;
+}
+
 .comparison #hours_interval_axis li {
     width: 49px;
 }
-#hours_interval_axis li {
+#hours_interval_axis li, #genre_interval_axis li {
     opacity: 1;
 }
 
@@ -447,7 +456,7 @@ div.tooltip span.extra_info .info div {
     background-color: #CCCCCC;
 }
 
-.content #hours_analysis {
+.content #hours_analysis, .content #genre_analysis {
     width: 980px;
 }
 
@@ -455,13 +464,13 @@ div.tooltip span.extra_info .info div {
     width: 95%;
 }
 
-#histogram .square, #hours_histogram .square {
+#histogram .square, #hours_histogram .square, #genre_histogram .square {
     height: 20px;
     width: 100%;
     position: absolute;
     bottom: 0;
 }
-#histogram, #hours_histogram {
+#histogram, #hours_histogram, #genre_histogram {
     position: relative;
     left: 0;
     top: 0;
@@ -478,6 +487,10 @@ div.tooltip span.extra_info .info div {
 #hours_histogram {
     width: 960px;
 }
+
+#genre_histogram {
+    width: 720px;
+}
 .comparison #hours_histogram {
     width: 1176px;
     margin-left: 19px;
@@ -486,25 +499,27 @@ div.tooltip span.extra_info .info div {
     display: block;
 }
 
-#histogram .day, #hours_histogram .hour {
+#histogram .day, #hours_histogram .hour, #genre_histogram .genre {
     height: 100%;
 }
-#hours_histogram .hour {
+#hours_histogram .hour, #genre_histogram .genre {
     width: 39px;
     position: relative;
     float: left;
     background-color: #eeeeee;
 }
+#genre_histogram .genre {
+    width: 79px;
+}
 
 
-
-#hours_histogram .hour .square {
+#hours_histogram .hour .square, #genre_histogram .genre .square {
     position: absolute;
     left: 0;
 
 }
 
-#histogram_div, #hours_analysis {
+#histogram_div, #hours_analysis, #genre_analysis {
     position: relative;
     width: 100%;
     float: left;
@@ -538,7 +553,7 @@ canvas.show {
     display: block;
 }
 
-#frequency, #hours_frequency_axis {
+#frequency, #hours_frequency_axis, #genre_frequency_axis {
     float: left;
     list-style: none;
     padding: 0;
@@ -554,7 +569,7 @@ canvas.show {
     padding-bottom: 2px;
 }
 
-#frequency::before, #hours_frequency_axis::before {
+#frequency::before, #hours_frequency_axis::before, #genre_frequency_axis::before {
     content: "Amount of songs";
     width: 10px;
     height: 10px;
@@ -568,18 +583,18 @@ canvas.show {
     white-space: nowrap;
 }
 
-#frequency li, #hours_frequency_axis li {
+#frequency li, #hours_frequency_axis li, #genre_frequency_axis li {
     font-size: 8px;
     opacity: 0;
 }
 
-#frequency.unfrequent :nth-child(5n +1), #hours_frequency_axis.unfrequent :nth-child(5n +1) {
+#frequency.unfrequent :nth-child(5n +1), #hours_frequency_axis.unfrequent :nth-child(5n +1), #genre_frequency_axis.unfrequent :nth-child(5n + 1) {
     opacity: 1;
 }
-#frequency.frequent :nth-child(10n +1), #hours_frequency_axis.frequent :nth-child(10n +1) {
+#frequency.frequent :nth-child(15n +1), #hours_frequency_axis.frequent :nth-child(15n +1), #genre_frequency_axis.frequent :nth-child(15n +1) {
     opacity: 1;
 }
-#frequency :last-child, #hours_frequency_axis :last-child {
+#frequency :last-child, #hours_frequency_axis :last-child, #genre_frequency_axis :last-child {
     opacity: 1;
 }
 .buttons {
@@ -939,7 +954,7 @@ canvas.show {
     margin-left: -1px;
 }
 
-#hours_histogram .title {
+#hours_histogram .title  {
     position: absolute;
     top: 0;
     left: 0;
@@ -1003,4 +1018,9 @@ canvas.show {
     background-size: auto 100%;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+.venn_diagrams > div {
+    float: left;
+    margin-right: 30px;
 }
