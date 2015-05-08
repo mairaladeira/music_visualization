@@ -10,7 +10,6 @@ from operator import itemgetter
 from mood import mood
 
 
-
 class GetMusic:
     def __init__(self, username):
         api_key = "173f5a8f7ca577012bf10a5fd4ad4da3"
@@ -26,10 +25,12 @@ class GetMusic:
         self.start_time = time.time()
         self.csv = []
         self.genders_list = set()
-        self.csvfile = open('data/data.csv', 'w')
+        self.dir = os.path.dirname(os.path.realpath(__file__))
+        #print(dir)
+        #self.csvfile = open('data/data.csv', 'w+')
         fieldnames = ['Name', 'Gender', 'Timestamp', 'Artist']
-        self.csv_writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames,delimiter=',')
-        self.csv_writer.writeheader()
+       #self.csv_writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames,delimiter=',')
+        #self.csv_writer.writeheader()
         self.moods = dict()
         self.artists_genre = dict()
 
@@ -127,10 +128,10 @@ class GetMusic:
             self.songs[self.encode_dict_key(song['name'])] = song_obj
         elif 'date' in song:
             self.songs[self.encode_dict_key(song['name'])]['played'] += 1
-        self.csv_writer.writerow({'Name': song['name'].replace("'", "\'"),
-                                  'Gender': self.songs[self.encode_dict_key(song['name'])]['gender'],
-                                  'Timestamp': song_date,
-                                  'Artist': song['artist']['#text']})
+        #self.csv_writer.writerow({'Name': song['name'].replace("'", "\'"),
+                                  #'Gender': self.songs[self.encode_dict_key(song['name'])]['gender'],
+                                  #'Timestamp': song_date,
+                                  #'Artist': song['artist']['#text']})
         t_song = [song['name'].replace("'", "\'"),
                   self.songs[self.encode_dict_key(song['name'])]['gender'],
                   song['artist']['#text'],
@@ -235,7 +236,7 @@ class GetMusic:
         for ts in self.time_songs:
             self.time_songs[i].append(self.songs[self.encode_dict_key(ts[0])]['played'])
             i += 1
-        self.csvfile.close()
+        #self.csvfile.close()
         self.time_songs = sorted(self.time_songs, key=itemgetter(4))
         artists = []
 
@@ -244,86 +245,86 @@ class GetMusic:
         self.artists = sorted(artists, key=itemgetter(1), reverse=True)
 
         #print(self.artists)
-        if not os.path.isfile('data/'+self.username+'_songs.pickle'):
-            f = open('data/'+self.username+'_songs.pickle', 'ab+')
+        if not os.path.isfile(self.dir+'/data/'+self.username+'_songs.pickle'):
+            f = open(self.dir+'/data/'+self.username+'_songs.pickle', 'ab+')
             f.close()
-        with open('data/'+self.username+'_songs.pickle', 'wb+') as f:
+        with open(self.dir+'/data/'+self.username+'_songs.pickle', 'wb+') as f:
             pickle.dump(self.songs, f, pickle.HIGHEST_PROTOCOL)
             f.close()
 
-        if not os.path.isfile('data/'+self.username+'_timesongs.pickle'):
-            f = open('data/'+self.username+'_timesongs.pickle', 'ab+')
+        if not os.path.isfile(self.dir+'/data/'+self.username+'_timesongs.pickle'):
+            f = open(self.dir+'/data/'+self.username+'_timesongs.pickle', 'ab+')
             f.close()
-        with open('data/'+self.username+'_timesongs.pickle', 'wb+') as f:
+        with open(self.dir+'/data/'+self.username+'_timesongs.pickle', 'wb+') as f:
             pickle.dump(self.time_songs, f, pickle.HIGHEST_PROTOCOL)
             f.close()
 
-        if not os.path.isfile('data/'+self.username+'_artists.pickle'):
+        if not os.path.isfile(self.dir+'/data/'+self.username+'_artists.pickle'):
             f = open(self.username+'_artists.pickle', 'ab+')
             f.close()
-        with open('data/'+self.username+'_artists.pickle', 'wb+') as f:
+        with open(self.dir+'/data/'+self.username+'_artists.pickle', 'wb+') as f:
             pickle.dump(self.artists, f, pickle.HIGHEST_PROTOCOL)
             f.close()
 
-        if not os.path.isfile('data/'+self.username+'_artists_genre.pickle'):
+        if not os.path.isfile(self.dir+'/data/'+self.username+'_artists_genre.pickle'):
             f = open(self.username+'_artists_genre.pickle', 'ab+')
             f.close()
         with open('data/'+self.username+'_artists_genre.pickle', 'wb+') as f:
             pickle.dump(self.artists_genre, f, pickle.HIGHEST_PROTOCOL)
             f.close()
 
-        if not os.path.isfile('data/'+self.username+'_albums.pickle'):
+        if not os.path.isfile(self.dir+'/data/'+self.username+'_albums.pickle'):
             f = open(self.username+'_albums.pickle', 'ab+')
             f.close()
-        with open('data/'+self.username+'_albums.pickle', 'wb+') as f:
+        with open(self.dir+'/data/'+self.username+'_albums.pickle', 'wb+') as f:
             pickle.dump(self.albums, f, pickle.HIGHEST_PROTOCOL)
             f.close()
 
-        if not os.path.isfile('data/'+self.username+'_genders.pickle'):
+        if not os.path.isfile(self.dir+'/data/'+self.username+'_genders.pickle'):
             f = open(self.username+'_genders.pickle', 'ab+')
             f.close()
-        with open('data/'+self.username+'_genders.pickle', 'wb+') as f:
+        with open(self.dir+'/data/'+self.username+'_genders.pickle', 'wb+') as f:
             pickle.dump(self.genders, f, pickle.HIGHEST_PROTOCOL)
             f.close()
         print("--- %s seconds ---" % (time.time() - self.start_time))
 
     def get_data(self, update=False):
-        if not os.path.isfile('data/'+self.username+'_songs.pickle') or update:
+        if not os.path.isfile(self.dir+'/data/'+self.username+'_songs.pickle') or update:
             self.get_music(1)
             self.cache_data()
             print(self.artists_genre)
         else:
-            with open('data/'+self.username+'_songs.pickle', 'rb+') as f:
+            with open(self.dir+'/data/'+self.username+'_songs.pickle', 'rb+') as f:
                 try:
                     self.songs = pickle.load(f)
                     f.close()
                 except Exception as e:
                     print(e)
-            with open('data/'+self.username+'_timesongs.pickle', 'rb+') as f:
+            with open(self.dir+'/data/'+self.username+'_timesongs.pickle', 'rb+') as f:
                 try:
                     self.time_songs = pickle.load(f)
                     f.close()
                 except Exception as e:
                     print(e)
-            with open('data/'+self.username+'_artists.pickle', 'rb+') as f:
+            with open(self.dir+'/data/'+self.username+'_artists.pickle', 'rb+') as f:
                 try:
                     self.artists = pickle.load(f)
                     f.close()
                 except Exception as e:
                     print(e)
-            with open('data/'+self.username+'_artists_genre.pickle', 'rb+') as f:
+            with open(self.dir+'/data/'+self.username+'_artists_genre.pickle', 'rb+') as f:
                 try:
                     self.artists_genre = pickle.load(f)
                     f.close()
                 except Exception as e:
                     print(e)
-            with open('data/'+self.username+'_albums.pickle', 'rb+') as f:
+            with open(self.dir+'/data/'+self.username+'_albums.pickle', 'rb+') as f:
                 try:
                     self.albums = pickle.load(f)
                     f.close()
                 except Exception as e:
                     print(e)
-            with open('data/'+self.username+'_genders.pickle', 'rb+') as f:
+            with open(self.dir+'/data/'+self.username+'_genders.pickle', 'rb+') as f:
                 try:
                     self.genders = pickle.load(f)
                     f.close()
@@ -331,7 +332,7 @@ class GetMusic:
                     print(e)
 if __name__ == "__main__":
     # options: ernestollamas, gabrielahrlr, ladeira_maira, mehreenikram
-    test = GetMusic('ladeira_maira')
+    test = GetMusic('mehreenikram')
     update_data = True
     test.get_data(update=update_data)
 
