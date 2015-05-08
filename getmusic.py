@@ -331,7 +331,7 @@ class GetMusic:
                     print(e)
 if __name__ == "__main__":
     # options: ernestollamas, gabrielahrlr, ladeira_maira, mehreenikram
-    test = GetMusic('mehreenikram')
+    test = GetMusic('ladeira_maira')
     update_data = True
     test.get_data(update=update_data)
 

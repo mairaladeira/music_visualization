@@ -49,19 +49,7 @@ def update_data(uname=''):
         username = uname
     gm = GetMusic(username)
     gm.get_data()
-    songs_l = gm.get_songs()
-    artists_l = gm.get_artists()
-    albums_l = gm.get_albums()
-    genders_l = gm.get_genders()
     songs_by_time = gm.get_time_songs()
-    for s in songs_l:
-        songs.append(json.dumps(songs_l[s]))
-    for a in artists_l:
-        artists.append(json.dumps(artists_l[a]))
-    for a in albums_l:
-        albums.append(json.dumps(albums_l[a]))
-    for g in genders_l:
-        genders.append(json.dumps(genders_l[g]))
 
 
 @app.route("/<button>")
