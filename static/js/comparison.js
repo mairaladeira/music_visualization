@@ -1,7 +1,9 @@
 /**
  * Created by Maira on 5/7/15.
  */
-
+var g_artists_list = {};
+var ma_artists_list = {};
+var me_artists_list = {};
 function crete_word_clouds(){
     var colors = {
         'jazz_blues': '#774306',
@@ -18,17 +20,29 @@ function crete_word_clouds(){
     var gabriela_average = 0;
     $.each(gabriela_artists, function(i,v){
         gabriela_average = gabriela_average + v[1];
+        if (!v[0] in g_artists_list) {
+          g_artists_list[v[0]] = true;
+        }
     });
     gabriela_average = gabriela_average/gabriela_artists.length;
     var maira_average = 0;
     $.each(maira_artists, function(i,v){
         maira_average = maira_average + v[1];
+        if (!v[0] in ma_artists_list) {
+          ma_artists_list[v[0]] = true;
+        }
     });
     maira_average = maira_average/maira_artists.length;
     var mehreen_average = 0;
     $.each(mehreen_artists, function(i,v){
         mehreen_average = mehreen_average + v[1];
+        if (!v[0] in me_artists_list) {
+          me_artists_list[v[0]] = true;
+        }
     });
+    console.log(g_artists_list);
+    console.log(ma_artists_list);
+    console.log(me_artists_list);
     mehreen_average = mehreen_average/mehreen_artists.length;
     WordCloud(document.getElementById('gabriela'), {
         list: gabriela_artists,
