@@ -538,7 +538,7 @@ canvas {
 
 #canvas_overflow {
     position: absolute;
-    top: 0;
+    bottom: 71px;
     margin-left: 20px;
     border: none;
     left: 0;
@@ -566,7 +566,7 @@ canvas.show {
     padding-left: 25px;
     width: 10px;
     z-index: 10;
-    padding-bottom: 2px;
+    padding-bottom: 73px;
 }
 
 #frequency::before, #hours_frequency_axis::before, #genre_frequency_axis::before {

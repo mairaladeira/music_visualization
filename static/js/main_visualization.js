@@ -304,6 +304,7 @@ function get_canvas(dataPoints, canvas_id, color){
     var ctx = canvas.getContext('2d');
     canvas.width = (square_size+1)*dataPoints.length;
     canvas.height = height;
+    $('#canvas_overflow').height(height+2);
     ctx.lineWidth = 3;
     var point = get_histogram_x_y(dataPoints[0]);
     ctx.beginPath();
@@ -526,7 +527,7 @@ $(document).ready(function(){
     $(window).bind('scroll', function(){
         var offset_left = $(this).scrollLeft();
         $('#hours_axis').css('left', offset_left - 10);
-        $('#frequency').css('left', offset_left - 25);
+        $('#frequency').css('left', offset_left - 28);
         $('.buttons').css('left', offset_left +20);
         $('.histogram_title').css('left', offset_left +20);
         $('.right_box').removeClass('right_box');
