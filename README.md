@@ -11,7 +11,7 @@ Development Group:
    
 Requirements:
  
-This project requires the installation of pickle and flask libraries and works with Python 3.
+This project requires the installation of pickle, requests and flask libraries and works with Python 3.
    
 Get data (or update existent one): 
 ```
