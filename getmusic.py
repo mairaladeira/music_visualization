@@ -5,6 +5,7 @@ import os.path
 import requests
 import urllib
 import re
+import sys
 import csv
 from operator import itemgetter
 from mood import mood
@@ -292,7 +293,7 @@ class GetMusic:
         if not os.path.isfile(self.dir+'/data/'+self.username+'_songs.pickle') or update:
             self.get_music(1)
             self.cache_data()
-            print(self.artists_genre)
+            #print(self.artists_genre)
         else:
             with open(self.dir+'/data/'+self.username+'_songs.pickle', 'rb+') as f:
                 try:
@@ -332,7 +333,21 @@ class GetMusic:
                     print(e)
 if __name__ == "__main__":
     # options: ernestollamas, gabrielahrlr, ladeira_maira, mehreenikram
-    test = GetMusic('mehreenikram')
-    update_data = True
-    test.get_data(update=update_data)
-
+    if len(sys.argv) == 1:
+        gm = GetMusic('mehreenikram')
+        update_data = True
+        gm.get_data(update=update_data)
+    else:
+        args = sys.argv
+        if sys.argv[1] != '-u':
+            print('Incorrect use!')
+            print('Correct use: python getmusic.py -u <lastfm_user_name>')
+            sys.exit()
+        else:
+            try:
+                username = sys.argv[2]
+                gm = GetMusic(username)
+                update_data = True
+                gm.get_data(update=update_data)
+            except Exception as e:
+                print(e)

@@ -424,6 +424,11 @@ function bind_music_events(){
         music_overflow.find('.album span').html(music.album);
         music_overflow.find('.frequency strong').html(music.frequency);
         music_overflow.find('.play_time strong').html(music.day+' '+music.month+' '+music.year+' '+music.time);
+        var song_plays = $('.square.tooltip[data-class="'+format_music_name_for_html(music.name)+'"]');
+        var last_time = songs[song_plays.last().data('id')];
+        music_overflow.find('.last_time strong').html(last_time.day+' '+last_time.month+' '+last_time.year+' '+last_time.time);
+        var first_time = songs[song_plays.first().data('id')];
+        music_overflow.find('.first_time strong').html(first_time.day+' '+first_time.month+' '+first_time.year+' '+first_time.time);
         var music_frequency_axis = $('#music_frequency_axis');
         music_frequency_axis.html('');
         var music_days_axis = $('#music_days_axis');
