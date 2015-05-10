@@ -799,6 +799,10 @@ canvas.show {
     margin-left: 10px;
 }
 
+.about a {
+    color: #ffffff;
+}
+
 #extra_pages li a {
     text-decoration: none;
     color: #333;
@@ -1023,4 +1027,13 @@ canvas.show {
 .venn_diagrams > div {
     float: left;
     margin-right: 30px;
+}
+
+.about #slider_container_1, .about #slider_container_2, .about #slider_container_3, .about #slider_container_4, .about #slider_container_5, .about #slider_container_6, .about #slider_container_7{
+    position: relative;
+    top: 0; left: 0;
+    width: 700px !important;
+    height: 300px !important;
+    margin: 20px auto 10px !important;
+    display: block;
 }

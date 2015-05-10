@@ -5,6 +5,7 @@
     <title>Music Insights - About</title>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/default.css') }}">
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jssor.slider.mini.js') }}"></script>
     <head profile="http://www.w3.org/2005/10/profile">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
 
@@ -19,11 +20,190 @@
             <li>Maira Machado Ladeira</li>
             <li>Mehreen Ikram</li>
         </ul>
-        <strong>Explanation of the project: </strong> Add here<br><br>
-        <strong>Main Visualization: </strong> Add Explanations<br><br>
-        <strong>Daily frequency of genre histogram: </strong>Add Explanations<br><br>
-        <strong>Hours frequency of genre histogram: </strong>Add Explanations
+        <strong>Explanation of the project: </strong>
+        This project aims to create different visualizations for music data. The data is collected from the authors
+        Last.fm account and worked with the help of Python 3 and JavaScript in order to created representative visualizations.
+        The focus of this project is the genres of the songs that are represented by the following colors:
+        <ul id="genders_subtitle">
+            <li><span class="jazz_blues"></span>Jazz/blues</li>
+            <li><span class="pop"></span>Pop</li>
+            <li><span class="metal"></span>Metal</li>
+            <li><span class="rock"></span>Rock</li>
+            <li><span class="hip-hop_rap"></span>Hip-hop/Rap</li>
+            <li><span class="dance_electronic"></span>Dance/Electronic</li>
+            <li><span class="alternative_indie"></span>Alternative/Indie</li>
+            <li><span class="reb_soul"></span>R&B/Soul</li>
+            <li><span class="other"></span>Other</li>
+        </ul>
+        <div style="clear: left; padding-top: 20px; float:left;">
+            The <a href="/" target="_blank">Start Page</a> contains the visualizations of data for one single user. It can provide data for the following users:
+            <ul>
+                <li>gabrielahrlr</li>
+                <li>ladeira_maira</li>
+                <li>mehreenikram</li>
+            </ul>
+            The <a href="comparison" target="_blank">Comparison</a> page contains visualizations that compare the data from the 3 users. Each of the developed visualization is described bellow:
+        </div>
+        <br><br>
+        <div style="clear:left; float: left; padding-top: 20px">
+            <strong>Main Visualization (Stacked Tile Maps): </strong>
+            Stacked Tile Maps is a variation of Tile Maps, in this graph we
+            attempted to represent four dimensions: days, hours, genres and frequency
+            of songs. x-axis represents days,y-axis represents hours of the
+            day in 24 hour format, the color gives the genre of the listened songs,
+            and the amount of songs listened per hour and day are represented
+            as a stack in each tile.
+            <div id="slider_container_1">
+                <!-- Slides Container -->
+                <div u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 700px; height: 300px">
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/main_vis_gabriela.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/main_vis_maira.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/main_vis_mehreen.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/hover_song.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/song_detail.jpg') }}"/></div>
+                </div>
+            </div>
+            <script>
+                jQuery(document).ready(function ($) {
+                    var slides_container = $('#slider_container_1');
+                    slides_container.width($(window).width());
+                    slides_container.find('.slides').width($(window).width());
+                    var options = { $AutoPlay: true };
+                    var jssor_slider1 = new $JssorSlider$('slider_container_1', options);
+                });
+            </script>
+            <br><br>
+            <strong>Stacked daily bar histogram: </strong>
+            We introduced a stacked bar histogram on a daily basis, its x-axis represents
+            the days while it y-axis represents the frequency of
+            songs per day. This histogram not only shows the amount of songs listened
+            per day, it also depicts genre’s changes over time by keeping the
+            color of the listened songs accordingly to their genres. An innovative
+            feature added to this common data representation is that by clicking
+            one or more of the links located above the chart, a transparent black
+            window is displayed where we can discover the genres progress over
+            time and compare the frequency of listened songs for particular genres
+            with either the total amount of songs provided in the background with
+            the histogram or between them.
+            <div id="slider_container_2">
+                <!-- Slides Container -->
+                <div u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 700px; height: 300px">
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/histogram_gabriela.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/histogram_maira.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/histogram_mehreen.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/histogram_gabriela_pop_evo.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/histogram_gabriela_several_evol.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/histogram_maira_pop_evo.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/histogram_maira_several_evol.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/histogram_mehreen_rock_evo.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/histogram_mehreen_several_evol.jpg') }}"/></div>
+                </div>
+            </div>
+            <script>
+                jQuery(document).ready(function ($) {
+                    var slides_container = $('#slider_container_2');
+                    slides_container.width($(window).width());
+                    slides_container.find('.slides').width($(window).width());
+                    var options = { $AutoPlay: true };
+                    var jssor_slider1 = new $JssorSlider$('slider_container_2', options);
+                });
+            </script>
+            <br><br>
+            <strong>Stacked hourly bar histogram: </strong>
+            A stacked hourly histogram of genres reveals different insights about the data,
+            such as the preferred genres in each hour and the variation of genres listened per hour.
+            The x-axis represents the hours in a 24 hour
+            format and the y-axis shows the frequency of each listened genre. Additionally,
+            a mouse-hover functionality displays the percentage of the listened genre on the hour.<br><br>
+            <div id="slider_container_3">
+                <!-- Slides Container -->
+                <div u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 700px; height: 300px">
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/hours_histogram_gabriela.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/hours_histogram_maira.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/hours_histogram_mehreen.jpg') }}"/></div>
+                </div>
+            </div>
+            <script>
+                jQuery(document).ready(function ($) {
+                    var slides_container = $('#slider_container_3');
+                    slides_container.width($(window).width());
+                    slides_container.find('.slides').width($(window).width());
+                    var options = { $AutoPlay: true };
+                    var jssor_slider1 = new $JssorSlider$('slider_container_3', options);
+                });
+            </script>
 
+
+            <strong>Genres bars histogram:</strong>
+            It is a simple bar histogram representing
+            a general overview of the frequency of listened genres in the overall
+            time. On x-axis it represents genres and on y-axis represents the
+            amount of songs played by a user for each genre. The bars in the histogram
+            are colored according to the color of genre.<br><br>
+            <div id="slider_container_4">
+                <!-- Slides Container -->
+                <div u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 700px; height: 300px">
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/genres_histogram_gabriela.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/genres_histogram_maira.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/genres_histogram_mehreen.jpg') }}"/></div>
+                </div>
+            </div>
+            <script>
+                jQuery(document).ready(function ($) {
+                    var slides_container = $('#slider_container_4');
+                    slides_container.width($(window).width());
+                    slides_container.find('.slides').width($(window).width());
+                    var options = { $AutoPlay: true };
+                    var jssor_slider1 = new $JssorSlider$('slider_container_4', options);
+                });
+            </script>
+
+            <strong>Word clouds:</strong>
+            An artists word cloud, with the purpose of highlight the
+            artists listened the most by each of the authors of this work. The size
+            of the word illustrating the artist name is proportional to the number of
+            times the user has listened to that artist, whereas the color of the word
+            depicts the artists genre.
+            <div>
+                <img id="slider_container_5" src="{{ url_for('static', filename='img/screenshots/word_cloud.jpg') }}"/>
+            </div>
+            <br><br>
+            <strong>Venn diagrams:</strong>
+            Two venn diagrams are proposed, one intersecting the common number
+            of artists between the users and the other the common number of
+            songs. Hover, over the intersections gives the number of artists
+            or songs in common whereas over the name of the user gives the total
+            amount of artists or songs the user has.
+
+            <div>
+                <img id="slider_container_6" src="{{ url_for('static', filename='img/screenshots/venn_diagram.jpg') }}"/>
+            </div>
+            <br><br>
+            <strong>Genres timelines:</strong>
+            Composed by simple line graphs representing and comparing the evolution
+            of the genres of each author over the time. In this chart, x-axis represents
+            hours of the day in a 24 hours format and y-axis represents the
+            frequency of listening to a specific genre. This interactive plot gives
+            the opportunity to compare different genres between users, by choosing
+            the genre above the chart. Green line represents Gabriela, pink and purple represent
+            Maira and Mehreen respectively.
+            <div id="slider_container_7">
+                <!-- Slides Container -->
+                <div u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 700px; height: 300px">
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/time_searcher_representation.jpg') }}"/></div>
+                    <div><img u="image" src="{{ url_for('static', filename='img/screenshots/time_searcher_jazz_blues.jpg') }}"/></div>
+                </div>
+            </div>
+            <script>
+                jQuery(document).ready(function ($) {
+                    var slides_container = $('#slider_container_7');
+                    slides_container.width($(window).width());
+                    slides_container.find('.slides').width($(window).width());
+                    var options = { $AutoPlay: true };
+                    var jssor_slider1 = new $JssorSlider$('slider_container_7', options);
+                });
+            </script>
+        </div>
     </div>
     <footer>
         <ul id="extra_pages">
