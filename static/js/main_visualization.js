@@ -176,7 +176,7 @@ function get_hours_histogram() {
         }
     });
     var g_height = Math.round(505/g_max);
-    console.log(g_height);
+    //console.log(g_height);
     var class_n_g = 'frequent';
     if(g_max < 200) {
         class_n_g = 'unfrequent';
